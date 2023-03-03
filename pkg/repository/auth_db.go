@@ -1,10 +1,12 @@
 package repository
 
 import (
+	"strings"
 	"fmt"
 	model "github.com/vnSasa/music-market-api/model"
 	"database/sql"
 	"errors"
+	// "golang.org/x/crypto/bcrypt"
 )
 
 type AuthDB struct {
@@ -24,4 +26,29 @@ func (r *AuthDB) CreateUser(user model.User) error {
 	}
 
 	return nil
+}
+
+func (r *AuthDB) GetUser(login, password string) (int, error) {
+	// CHECK INPUT DATA
+	var pwd string
+	confirmPassword := fmt.Sprintf("SELECT password FROM %s WHERE login = ?", userTable)
+	row := r.db.QueryRow(confirmPassword, login)
+	err := row.Scan(&pwd)
+	if err != nil {
+		return 0, errors.New("password not found")
+	}
+	if strings.Compare(pwd, password) != 0 {
+		return 0, errors.New("error input password")
+	}
+
+	// SEARCH ID
+	var id int
+	searchID := fmt.Sprintf("SELECT id FROM %s WHERE login = ?", userTable)
+	rowID := r.db.QueryRow(searchID, login)
+	err = rowID.Scan(&id)
+	if err != nil {
+		return 0, errors.New("something went wrong when write id")
+	}
+
+	return id, nil
 }

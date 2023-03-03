@@ -7,6 +7,7 @@ import (
 
 type Authorization interface {
 	CreateUser(user model.User) error
+	GetUser(login, password string) (int, error)
 }
 
 type Products interface {

@@ -3,12 +3,20 @@ package service
 import (
 	"fmt"
 	"crypto/sha256"
+	"time"
+	// "errors"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/twinj/uuid"
 	"github.com/vnSasa/music-market-api/model"
 	"github.com/vnSasa/music-market-api/pkg/repository"
 )
 
 const (
+	tokenTTLup          = 10 * time.Minute
+	signingKey          = "qrkjk#4#%35FSFJlja#4353KSFjH"
 	salt = "hjqrhjqw124617ajfhajs"
+	timeForAccessToken  = 15
+	timeForRefreshToken = 24 * 7
 )
 
 type AuthService struct {
@@ -23,6 +31,50 @@ func (s *AuthService) CreateUser(user model.User) error {
 	user.Password = generatePasswordHash(user.Password)
 
 	return s.repo.CreateUser(user)
+}
+
+func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails, error) {
+	id, err := s.repo.GetUser(login, generatePasswordHash(password))
+	if err != nil {
+		return nil, err
+	}
+	td := &model.TokenDetails{}
+	td.AtExpires = time.Now().Add(time.Minute * timeForAccessToken).Unix()
+	td.AccessUUID = uuid.NewV4().String()
+
+	td.RtExpires = time.Now().Add(time.Hour * timeForRefreshToken).Unix()
+	td.RefreshUUID = uuid.NewV4().String()
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.AccessTokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: td.AtExpires,
+		},
+		UserID:  id,
+		AtUUID:  td.AccessUUID,
+		RtUUID:  td.RefreshUUID,
+	})
+
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.RefreshTokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: td.RtExpires,
+		},
+		UserID:    id,
+		RtUUID:    td.RefreshUUID,
+		AtUUID:    td.AccessUUID,
+		IsRefresh: true,
+	})
+
+	td.AccessToken, err = accessToken.SignedString([]byte(signingKey))
+	if err != nil {
+		return nil, err
+	}
+
+	td.RefreshToken, err = refreshToken.SignedString([]byte(signingKey))
+	if err != nil {
+		return nil, err
+	}
+
+	return td, nil
 }
 
 func generatePasswordHash(password string) string {
