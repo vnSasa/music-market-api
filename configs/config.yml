@@ -1,0 +1,11 @@
+port: "8000"
+
+db:
+  dbusername: "sasa"
+  dbpassword: "110513"
+  dbhost: "127.0.0.1"
+  dbport: "3306"
+  dbname: "music-market"
+
+redis:
+  Addr: "localhost:6379"
