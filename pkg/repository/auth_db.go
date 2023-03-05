@@ -6,7 +6,6 @@ import (
 	model "github.com/vnSasa/music-market-api/model"
 	"database/sql"
 	"errors"
-	// "golang.org/x/crypto/bcrypt"
 )
 
 type AuthDB struct {
