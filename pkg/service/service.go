@@ -8,6 +8,7 @@ import (
 type Authorization interface {
 	CreateUser(user model.User) error
 	GenerateToken(login, password string) (*model.TokenDetails, error)
+	ParseToken(accessToken string) (*model.AccessTokenClaims, error)
 }
 
 type Products interface {

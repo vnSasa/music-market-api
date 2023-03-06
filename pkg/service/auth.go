@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"crypto/sha256"
 	"time"
-	// "errors"
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/twinj/uuid"
 	"github.com/vnSasa/music-market-api/model"
@@ -75,6 +75,25 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 	}
 
 	return td, nil
+}
+
+func (s *AuthService) ParseToken(accessToken string) (*model.AccessTokenClaims, error) {
+	token, err := jwt.ParseWithClaims(accessToken, &model.AccessTokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("invalid signing method")
+		}
+
+		return []byte(signingKey), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	claims, ok := token.Claims.(*model.AccessTokenClaims)
+	if !ok {
+		return nil, errors.New("token claims are not of type *tokenClaims")
+	}
+
+	return claims, nil
 }
 
 func generatePasswordHash(password string) string {
