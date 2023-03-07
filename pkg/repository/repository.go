@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+
 	model "github.com/vnSasa/music-market-api/model"
 )
 
@@ -10,13 +11,9 @@ type Authorization interface {
 	GetUser(login, password string) (int, error)
 }
 
-type Products interface {
+type Products interface{}
 
-}
-
-type Buckets interface {
-	
-}
+type Buckets interface{}
 
 type Repository struct {
 	Authorization
@@ -26,6 +23,6 @@ type Repository struct {
 
 func NewRepository(db *sql.DB) *Repository {
 	return &Repository{
-		Authorization:	NewAuthDB(db),
+		Authorization: NewAuthDB(db),
 	}
 }

@@ -18,6 +18,7 @@ type AccessTokenClaims struct {
 	UserID  int    `json:"user_id"`
 	AtUUID  string `json:"access_uuid"`
 	RtUUID  string `json:"refresh_uuid"`
+	IsAdmin bool   `json:"is_admin"`
 }
 
 type RefreshTokenClaims struct {
@@ -25,5 +26,6 @@ type RefreshTokenClaims struct {
 	UserID    int    `json:"user_id"`
 	RtUUID    string `json:"refresh_uuid"`
 	AtUUID    string `json:"access_uuid"`
+	IsAdmin   bool   `json:"is_admin"`
 	IsRefresh bool   `json:"is_refresh"`
 }

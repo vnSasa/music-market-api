@@ -1,23 +1,24 @@
 package repository
 
 import (
-	"fmt"
 	"database/sql"
+	"fmt"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
-	userTable = "users"
+	userTable    = "users"
 	productTable = "products"
-	bucketTable = "buckets"
+	bucketTable  = "buckets"
 )
 
 type Config struct {
-	UserName	string
-	Password	string
-	Host	string
-	Port	string
-	DBName	string
+	UserName string
+	Password string
+	Host     string
+	Port     string
+	DBName   string
 }
 
 func NewMySQLDB(cfg Config) (*sql.DB, error) {

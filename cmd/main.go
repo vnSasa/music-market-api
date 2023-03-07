@@ -1,30 +1,30 @@
 package main
 
-import(
-	"github.com/vnSasa/music-market-api/pkg/repository"
-	"github.com/vnSasa/music-market-api/pkg/service"
-	"github.com/vnSasa/music-market-api/pkg/handler"
-	api "github.com/vnSasa/music-market-api"
-	"github.com/spf13/viper"
-	"github.com/sirupsen/logrus"
-
+import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+	api "github.com/vnSasa/music-market-api"
+	"github.com/vnSasa/music-market-api/pkg/handler"
+	"github.com/vnSasa/music-market-api/pkg/repository"
+	"github.com/vnSasa/music-market-api/pkg/service"
 )
 
-func main()  {
+func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
-	
+
 	db, err := repository.NewMySQLDB(repository.Config{
-		UserName:	viper.GetString("db.dbusername"),
-		Password:	viper.GetString("db.dbpassword"),
-		Host:	viper.GetString("db.dbhost"),
-		Port:	viper.GetString("db.dbport"),
-		DBName:	viper.GetString("db.dbname"),
+		UserName: viper.GetString("db.dbusername"),
+		Password: viper.GetString("db.dbpassword"),
+		Host:     viper.GetString("db.dbhost"),
+		Port:     viper.GetString("db.dbport"),
+		DBName:   viper.GetString("db.dbname"),
 	})
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
@@ -43,7 +43,7 @@ func main()  {
 	}()
 
 	logrus.Print("Market Started")
-	
+
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit

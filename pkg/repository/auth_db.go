@@ -1,11 +1,12 @@
 package repository
 
 import (
-	"strings"
-	"fmt"
-	model "github.com/vnSasa/music-market-api/model"
 	"database/sql"
 	"errors"
+	"fmt"
+	"strings"
+
+	model "github.com/vnSasa/music-market-api/model"
 )
 
 type AuthDB struct {
@@ -18,7 +19,7 @@ func NewAuthDB(db *sql.DB) *AuthDB {
 
 func (r *AuthDB) CreateUser(user model.User) error {
 	query := fmt.Sprintf("INSERT INTO %s (login, first_name, last_name, password) "+
-			"VALUES (?, ?, ?, ?)", userTable)
+		"VALUES (?, ?, ?, ?)", userTable)
 	_, err := r.db.Exec(query, user.Login, user.FirstName, user.LastName, user.Password)
 	if err != nil {
 		return errors.New(err.Error())

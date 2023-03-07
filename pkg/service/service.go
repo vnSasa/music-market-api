@@ -11,13 +11,9 @@ type Authorization interface {
 	ParseToken(accessToken string) (*model.AccessTokenClaims, error)
 }
 
-type Products interface {
+type Products interface{}
 
-}
-
-type Buckets interface {
-	
-}
+type Buckets interface{}
 
 type Service struct {
 	Authorization
@@ -27,6 +23,6 @@ type Service struct {
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Authorization:	NewAuthSerice(repos.Authorization),
+		Authorization: NewAuthSerice(repos.Authorization),
 	}
 }

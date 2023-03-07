@@ -1,10 +1,12 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
+	"errors"
 	"net/http"
 	"time"
-	"errors"
+
+	"github.com/gin-gonic/gin"
+
 	model "github.com/vnSasa/music-market-api/model"
 )
 
@@ -63,11 +65,11 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 	http.SetCookie(c.Writer, &http.Cookie{
-		Name:	atData,
-		Value:	token.AccessToken,
-		Path:	"/",
-		Expires:	time.Unix(token.AtExpires, 0),
-		HttpOnly:	true,
+		Name:     atData,
+		Value:    token.AccessToken,
+		Path:     "/",
+		Expires:  time.Unix(token.AtExpires, 0),
+		HttpOnly: true,
 	})
 	c.HTML(http.StatusOK, "main_page.html", nil)
 }
@@ -76,7 +78,7 @@ func (h *Handler) logout(c *gin.Context) {
 	accessTokenValue, err := c.Cookie(atData)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "access token not found")
-		
+
 		return
 	}
 	logoutData, err := h.services.Authorization.ParseToken(accessTokenValue)
@@ -99,11 +101,11 @@ func (h *Handler) logout(c *gin.Context) {
 		return
 	}
 	http.SetCookie(c.Writer, &http.Cookie{
-		Name:	atData,
-		Value:	"",
-		Path:	"/",
-		Expires:	time.Unix(0, 0),
-		HttpOnly:	true,
+		Name:     atData,
+		Value:    "",
+		Path:     "/",
+		Expires:  time.Unix(0, 0),
+		HttpOnly: true,
 	})
 	c.HTML(http.StatusOK, "index.html", nil)
 }

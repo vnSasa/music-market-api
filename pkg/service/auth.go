@@ -1,11 +1,14 @@
 package service
 
 import (
-	"fmt"
 	"crypto/sha256"
-	"time"
 	"errors"
+	"fmt"
+	"strings"
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
+	"github.com/spf13/viper"
 	"github.com/twinj/uuid"
 	"github.com/vnSasa/music-market-api/model"
 	"github.com/vnSasa/music-market-api/pkg/repository"
@@ -14,7 +17,7 @@ import (
 const (
 	tokenTTLup          = 10 * time.Minute
 	signingKey          = "qrkjk#4#%35FSFJlja#4353KSFjH"
-	salt = "hjqrhjqw124617ajfhajs"
+	salt                = "hjqrhjqw124617ajfhajs"
 	timeForAccessToken  = 15
 	timeForRefreshToken = 24 * 7
 )
@@ -38,6 +41,12 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 	if err != nil {
 		return nil, err
 	}
+
+	var isAdmin bool
+	if strings.Compare(login, viper.GetString("admin.Login")) != 0 {
+		isAdmin = false
+	}
+
 	td := &model.TokenDetails{}
 	td.AtExpires = time.Now().Add(time.Minute * timeForAccessToken).Unix()
 	td.AccessUUID = uuid.NewV4().String()
@@ -52,6 +61,7 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 		UserID:  id,
 		AtUUID:  td.AccessUUID,
 		RtUUID:  td.RefreshUUID,
+		IsAdmin: isAdmin,
 	})
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.RefreshTokenClaims{
@@ -61,6 +71,7 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 		UserID:    id,
 		RtUUID:    td.RefreshUUID,
 		AtUUID:    td.AccessUUID,
+		IsAdmin:   isAdmin,
 		IsRefresh: true,
 	})
 
