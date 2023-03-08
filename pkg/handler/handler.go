@@ -14,6 +14,8 @@ func NewHandler(services *service.Service) *Handler {
 }
 
 func (h *Handler) InitRoute() *gin.Engine {
+	h.initAdmin(nil)
+	
 	router := gin.New()
 
 	router.Static("/static", "static")
@@ -30,6 +32,14 @@ func (h *Handler) InitRoute() *gin.Engine {
 	}
 
 	auth.Use(h.saveAccessToken)
+
+	admin := router.Group("/api_admin")
+	{
+		admin.POST("/create_artist", h.createArtist)
+		admin.GET("/artist", h.getAllArtist)
+		admin.POST("/create_song", h.createSong)
+		admin.GET("/song", h.getAllSong)
+	}
 
 	return router
 }

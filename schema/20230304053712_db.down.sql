@@ -1,7 +1,7 @@
 DROP TABLE user_library;
 
-DROP TABLE song;
+DROP TABLE songs;
 
-DROP TABLE artist;
+DROP TABLE artists;
 
 DROP TABLE users;

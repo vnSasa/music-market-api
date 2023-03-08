@@ -3,7 +3,10 @@ package handler
 import (
 	"errors"
 	"net/http"
+	"strings"
 	"time"
+
+	"github.com/spf13/viper"
 
 	"github.com/gin-gonic/gin"
 
@@ -12,6 +15,14 @@ import (
 
 func (h *Handler) index(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", nil)
+}
+
+func (h *Handler) initAdmin(c *gin.Context) {
+	input := model.User{
+		Login:    viper.GetString("admin.Login"),
+		Password: viper.GetString("admin.Password"),
+	}
+	h.services.Authorization.CreateUser(input)
 }
 
 func (h *Handler) signUp(c *gin.Context) {
@@ -71,7 +82,11 @@ func (h *Handler) signIn(c *gin.Context) {
 		Expires:  time.Unix(token.AtExpires, 0),
 		HttpOnly: true,
 	})
-	c.HTML(http.StatusOK, "main_page.html", nil)
+	if strings.Compare(input.Login, viper.GetString("admin.Login")) == 0 {
+		c.HTML(http.StatusOK, "main_page_admin.html", nil)
+	} else {
+		c.HTML(http.StatusOK, "main_page_user.html", nil)
+	}
 }
 
 func (h *Handler) logout(c *gin.Context) {

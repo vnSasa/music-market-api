@@ -12,3 +12,4 @@ redis:
 
 admin:
   Login:  "Admin"
+  Password: "Password"
