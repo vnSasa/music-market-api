@@ -11,18 +11,24 @@ type Authorization interface {
 	GetUser(login, password string) (int, error)
 }
 
-type Products interface{}
+type Artists interface {
+	CreateArtist(artist model.ArtistList) error
+}
 
-type Buckets interface{}
+type Songs interface{}
+
+type UsersLibrary interface{}
 
 type Repository struct {
 	Authorization
-	Products
-	Buckets
+	Artists
+	Songs
+	UsersLibrary
 }
 
 func NewRepository(db *sql.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthDB(db),
+		Artists:       NewArtistDB(db),
 	}
 }

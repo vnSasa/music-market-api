@@ -28,30 +28,53 @@
         </header>
 
         <main role="main" class="inner cover">
-            <h1>Add Artist</h1>
-            <form action="/api_admin/createArtist" class="lead" method="post">
-                <label>name of artist or band</label><br>
-                <input type="text" name="name_artist" /><br><br>
-                <label>date of birth or establishment</label><br>
-                <input type="text" name="date_of_birth" /><br><br>
-                <label>about artist of band</label><br>
-                <input type="text" name="about_artist" /><br><br>
-                <input type="submit" value="Add Artist">
-            </form>
-            <br><br>
-            <h1>Add Song</h1>
-            <form action="/api_admin/createSong" class="lead" method="post">
-                <label>name of song</label><br>
-                <input type="text" name="name_song" /><br><br>
-                <label>genre</label><br>
-                <input type="text" name="genre" /><br><br>
-                <label>alternative genre</label><br>
-                <input type="text" name="second_genre" /><br><br>
-                <label>year of release</label><br>
-                <input type="text" name="year_of_release" /><br><br>
-                <input type="submit" value="Add Song">
-            </form>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <a href="#" class="btn btn-primary btn-lg mb-3" id="add-artist-btn">Add Artist</a>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <a href="#" class="btn btn-primary btn-lg mb-3" id="add-song-btn">Add Song</a>
+                    </div>
+                </div>
+                <div id="add-artist-form" class="mb-5 d-none">
+                    <h1>Add Artist</h1>
+                    <form action="/api_admin/create_artist" class="lead" method="post">
+                        <label>name of artist or band</label><br>
+                        <input type="text" name="name_artist" /><br><br>
+                        <label>date of birth or establishment</label><br>
+                        <input type="text" name="date_of_birth" /><br><br>
+                        <label>about artist or band</label><br>
+                        <input type="text" name="about_artist" /><br><br>
+                        <input type="submit" value="Add Artist">
+                    </form>
+                </div>
+                <div id="add-song-form" class="mb-5 d-none">
+                    <h1>Add Song</h1>
+                    <form action="/api_admin/create_song" class="lead" method="post">
+                        <label>name of song</label><br>
+                        <input type="text" name="name_song" /><br><br>
+                        <label>genre</label><br>
+                        <input type="text" name="genre" /><br><br>
+                        <label>alternative genre</label><br>
+                        <input type="text" name="second_genre" /><br><br>
+                        <label>year of release</label><br>
+                        <input type="text" name="year_of_release" /><br><br>
+                        <input type="submit" value="Add Song">
+                    </form>
+                </div>
+            </div>
         </main>
+
+        <script>
+            document.getElementById("add-artist-btn").addEventListener("click", function() {
+                document.getElementById("add-artist-form").classList.toggle("d-none");
+            });
+        
+            document.getElementById("add-song-btn").addEventListener("click", function() {
+                document.getElementById("add-song-form").classList.toggle("d-none");
+            });
+        </script>
 
         <footer class="mt-auto text-white-50">
             <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>

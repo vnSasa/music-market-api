@@ -22,7 +22,7 @@ func (r *AuthDB) CreateUser(user model.User) error {
 		"VALUES (?, ?, ?, ?)", userTable)
 	_, err := r.db.Exec(query, user.Login, user.FirstName, user.LastName, user.Password)
 	if err != nil {
-		return errors.New(err.Error())
+		return err
 	}
 
 	return nil

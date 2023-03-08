@@ -7,22 +7,22 @@ CREATE TABLE users
     password varchar(255) not null
 );
 
-CREATE TABLE artist
+CREATE TABLE artists
 (
     id serial not null unique,
-    name_artist varchar(255) not null,
-    date_of_birth varchar(255),
-    about_artist varchar(255)
+    name_artist varchar(255) not null unique,
+    date_of_birth varchar(255) not null,
+    about_artist varchar(1000)
 );
 
-CREATE TABLE song
+CREATE TABLE songs
 (
     id serial not null unique,
     artist_id int references artist (id) on delete cascade,
     name_song varchar(255) not null,
     genre varchar(255) not null,
     second_genre varchar(255),
-    year_of_release varchar(255) not null
+    year_of_release int not null
 );
 
 CREATE TABLE user_library

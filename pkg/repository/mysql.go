@@ -9,8 +9,9 @@ import (
 
 const (
 	userTable    = "users"
-	productTable = "products"
-	bucketTable  = "buckets"
+	artistTable  = "artists"
+	songTable    = "songs"
+	libraryTable = "user_library"
 )
 
 type Config struct {

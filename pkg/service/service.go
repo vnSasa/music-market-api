@@ -11,18 +11,24 @@ type Authorization interface {
 	ParseToken(accessToken string) (*model.AccessTokenClaims, error)
 }
 
-type Products interface{}
+type Artists interface {
+	CreateArtist(artist model.ArtistList) error
+}
 
-type Buckets interface{}
+type Songs interface{}
+
+type UsersLibrary interface{}
 
 type Service struct {
 	Authorization
-	Products
-	Buckets
+	Artists
+	Songs
+	UsersLibrary
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Authorization: NewAuthSerice(repos.Authorization),
+		Authorization: NewAuthService(repos.Authorization),
+		Artists:       NewArtistService(repos.Artists),
 	}
 }

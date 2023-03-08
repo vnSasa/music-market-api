@@ -14,9 +14,9 @@ func NewHandler(services *service.Service) *Handler {
 }
 
 func (h *Handler) InitRoute() *gin.Engine {
+	h.initAdmin(nil)
+	
 	router := gin.New()
-
-	router.NoMethod(h.initAdmin)
 
 	router.Static("/static", "static")
 	router.LoadHTMLGlob("./pkg/handler/templates/*")
@@ -33,7 +33,7 @@ func (h *Handler) InitRoute() *gin.Engine {
 
 	auth.Use(h.saveAccessToken)
 
-	admin := router.Group("/api-admin")
+	admin := router.Group("/api_admin")
 	{
 		admin.POST("/create_artist", h.createArtist)
 		admin.GET("/artist", h.getAllArtist)

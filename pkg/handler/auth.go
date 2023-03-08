@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"github.com/spf13/viper"
-	"strings"
 	"errors"
 	"net/http"
+	"strings"
 	"time"
+
+	"github.com/spf13/viper"
 
 	"github.com/gin-gonic/gin"
 
@@ -18,16 +19,10 @@ func (h *Handler) index(c *gin.Context) {
 
 func (h *Handler) initAdmin(c *gin.Context) {
 	input := model.User{
-		Login:	viper.GetString("admin.Login"),
-		Password:	viper.GetString("admin.Password"),
+		Login:    viper.GetString("admin.Login"),
+		Password: viper.GetString("admin.Password"),
 	}
-	err := h.services.Authorization.CreateUser(input)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-
-		return
-	}
-	c.HTML(http.StatusOK, "index.html", nil)
+	h.services.Authorization.CreateUser(input)
 }
 
 func (h *Handler) signUp(c *gin.Context) {
