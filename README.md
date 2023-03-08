@@ -9,6 +9,12 @@ creating a music database with the possibility of adding your favorite compositi
 
 - add the HTML files to the corresponding functionality
 
+## task-2
+
+- create a functionality for the administrator (adding an artist and a song to the database)
+
+- add the HTML files to the corresponding functionality
+
 ## Before starting the project, start Redis:
 
 - docker run -d -p 6379:6379 redis
