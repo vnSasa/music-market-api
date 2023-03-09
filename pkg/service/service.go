@@ -13,6 +13,7 @@ type Authorization interface {
 
 type Artists interface {
 	CreateArtist(artist model.ArtistList) error
+	GetAllArtists() ([]model.ArtistList, error)
 }
 
 type Songs interface{}

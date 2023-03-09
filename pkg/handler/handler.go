@@ -35,6 +35,7 @@ func (h *Handler) InitRoute() *gin.Engine {
 
 	admin := router.Group("/api_admin")
 	{
+		admin.GET("/main_page", h.mainPage)
 		admin.POST("/create_artist", h.createArtist)
 		admin.GET("/artist", h.getAllArtist)
 		admin.POST("/create_song", h.createSong)

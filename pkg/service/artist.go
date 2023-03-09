@@ -16,3 +16,7 @@ func NewArtistService(repo repository.Artists) *ArtistService {
 func (s *ArtistService) CreateArtist(artist model.ArtistList) error {
 	return s.repo.CreateArtist(artist)
 }
+
+func (s *ArtistService) GetAllArtists() ([]model.ArtistList, error) {
+	return s.repo.GetAllArtists()
+}
