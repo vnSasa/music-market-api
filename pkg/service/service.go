@@ -16,7 +16,10 @@ type Artists interface {
 	GetAllArtists() ([]model.ArtistList, error)
 }
 
-type Songs interface{}
+type Songs interface{
+	CreateSong(song model.SongList) error
+	GetAllSongs() ([]model.SongList, error)
+}
 
 type UsersLibrary interface{}
 
@@ -31,5 +34,6 @@ func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Artists:       NewArtistService(repos.Artists),
+		Songs:	NewSongService(repos.Songs),
 	}
 }

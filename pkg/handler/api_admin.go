@@ -28,6 +28,19 @@ func (h *Handler) createArtist(c *gin.Context) {
 }
 
 func (h *Handler) createSong(c *gin.Context) {
+	var input model.SongList
+	if err := c.ShouldBind(&input); err != nil {
+		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")
+
+		return
+	}
+	err := h.services.Songs.CreateSong(input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "main_page_admin.html", nil)
 }
 
 func (h *Handler) getAllArtist(c *gin.Context) {
@@ -37,11 +50,19 @@ func (h *Handler) getAllArtist(c *gin.Context) {
 
 		return
 	}
-
 	c.HTML(http.StatusOK, "get_artist.html", gin.H{
 		"Artists": artists,
 	})
 }
 
 func (h *Handler) getAllSong(c *gin.Context) {
+	songs, err := h.services.Songs.GetAllSongs()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "get_song.html", gin.H{
+		"Songs": songs,
+	})
 }

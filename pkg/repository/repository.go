@@ -16,7 +16,10 @@ type Artists interface {
 	GetAllArtists() ([]model.ArtistList, error)
 }
 
-type Songs interface{}
+type Songs interface{
+	CreateSong(song model.SongList) error
+	GetAllSongs() ([]model.SongList, error)
+}
 
 type UsersLibrary interface{}
 
@@ -31,5 +34,6 @@ func NewRepository(db *sql.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthDB(db),
 		Artists:       NewArtistDB(db),
+		Songs:	NewSongDB(db),
 	}
 }
