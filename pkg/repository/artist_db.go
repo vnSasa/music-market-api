@@ -40,7 +40,7 @@ func (r *ArtistDB) CreateArtist(artist model.ArtistList) error {
 
 func (r *ArtistDB) GetAllArtists() ([]model.ArtistList, error) {
 	var artists []model.ArtistList
-	query := fmt.Sprintf("SELECT name_artist, date_of_birth, about_artist FROM %s", artistTable)
+	query := fmt.Sprintf("SELECT id, name_artist, date_of_birth, about_artist FROM %s", artistTable)
 	
 	rows, err := r.db.Query(query)
     if err != nil {
@@ -50,7 +50,7 @@ func (r *ArtistDB) GetAllArtists() ([]model.ArtistList, error) {
     
     for rows.Next() {
         var artist model.ArtistList
-        err = rows.Scan(&artist.Name, &artist.Birth, &artist.About)
+        err = rows.Scan(&artist.ID, &artist.Name, &artist.Birth, &artist.About)
         if err != nil {
             return nil, err
         }

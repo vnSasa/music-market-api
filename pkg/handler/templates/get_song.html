@@ -17,13 +17,39 @@
             <div>
                 <h3 class="float-md-start mb-0">Cover</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a class="nav-link fw-bold py-1 px-0" href="/api_admin/main_page">Create Menu</a>
+                    <a class="btn btn-dark" href="/api_admin/main_page">Create Menu</a>
                     <form action="/auth/logout" class="nav-link fw-bold py-1 px-0" method="post">
                         <input type="submit" value="LogOut">
                     </form>
                 </nav>
             </div>
         </header>
+
+        <h1>Song Information</h1>
+	    <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ID_Artist</th>
+                    <th>Name</th>
+                    <th>Genre</th>
+                    <th>Second Genre</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Songs}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td>{{.ArtistID}}</td>
+                    <td>{{.Name}}</td>
+                    <td>{{.Genre}}</td>
+                    <td>{{.Genre2}}</td>
+                    <td>{{.Year}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
 
         <footer class="mt-auto text-white-50">
             <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
