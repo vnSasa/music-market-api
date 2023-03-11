@@ -14,12 +14,12 @@ func NewHandler(services *service.Service) *Handler {
 }
 
 func (h *Handler) InitRoute() *gin.Engine {
-	h.initAdmin(nil)
-	
+	h.initAdmin()
+
 	router := gin.New()
 
-	router.Static("/static", "static")
-	router.LoadHTMLGlob("./pkg/handler/templates/*")
+	router.Static("/js", "./pkg/handler/templates/js")
+	router.LoadHTMLGlob("./pkg/handler/templates/*.html")
 
 	router.GET("/", h.index)
 
@@ -37,9 +37,12 @@ func (h *Handler) InitRoute() *gin.Engine {
 	{
 		admin.GET("/main_page", h.mainPage)
 		admin.POST("/create_artist", h.createArtist)
+		admin.GET("/update_artist/:id", h.updateArtist)
+		admin.POST("/save_changes/:id", h.saveChanges)
 		admin.GET("/artist", h.getAllArtist)
 		admin.POST("/create_song", h.createSong)
 		admin.GET("/song", h.getAllSong)
+		// admin.POST("/update_song", h.updateSong)
 	}
 
 	return router

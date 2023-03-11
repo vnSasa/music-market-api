@@ -14,9 +14,10 @@ type Authorization interface {
 type Artists interface {
 	CreateArtist(artist model.ArtistList) error
 	GetAllArtists() ([]model.ArtistList, error)
+	UpdateArtist(id int, artist model.ArtistList) error
 }
 
-type Songs interface{
+type Songs interface {
 	CreateSong(song model.SongList) error
 	GetAllSongs() ([]model.SongList, error)
 }
@@ -34,6 +35,6 @@ func NewRepository(db *sql.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthDB(db),
 		Artists:       NewArtistDB(db),
-		Songs:	NewSongDB(db),
+		Songs:         NewSongDB(db),
 	}
 }

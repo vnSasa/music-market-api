@@ -17,7 +17,7 @@ func (h *Handler) index(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", nil)
 }
 
-func (h *Handler) initAdmin(c *gin.Context) {
+func (h *Handler) initAdmin() {
 	input := model.User{
 		Login:    viper.GetString("admin.Login"),
 		Password: viper.GetString("admin.Password"),

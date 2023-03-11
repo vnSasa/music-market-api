@@ -22,10 +22,10 @@ func (r *SongDB) CreateSong(song model.SongList) error {
 		return err
 	}
 	defer tx.Rollback()
-	
+
 	query := fmt.Sprintf("INSERT INTO %s (artist_id, name_song, genre, second_genre, year_of_release)"+
 		"VALUES (?, ?, ?, ?, ?)", songTable)
-	
+
 	_, err = r.db.Exec(query, song.ArtistID, song.Name, song.Genre, song.Genre2, song.Year)
 	if err != nil {
 		return errors.New(err.Error())
@@ -41,24 +41,24 @@ func (r *SongDB) CreateSong(song model.SongList) error {
 func (r *SongDB) GetAllSongs() ([]model.SongList, error) {
 	var songs []model.SongList
 	query := fmt.Sprintf("SELECT id, artist_id, name_song, genre, second_genre, year_of_release FROM %s", songTable)
-	
+
 	rows, err := r.db.Query(query)
-    if err != nil {
-        return nil, err
-    }
-    defer rows.Close()
-    
-    for rows.Next() {
-        var song model.SongList
-        err = rows.Scan(&song.ID, &song.ArtistID, &song.Name, &song.Genre, &song.Genre2, &song.Year)
-        if err != nil {
-            return nil, err
-        }
-        songs = append(songs, song)
-    }
-    if err = rows.Err(); err != nil {
-        return nil, err
-    }
-    
-    return songs, nil
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var song model.SongList
+		err = rows.Scan(&song.ID, &song.ArtistID, &song.Name, &song.Genre, &song.Genre2, &song.Year)
+		if err != nil {
+			return nil, err
+		}
+		songs = append(songs, song)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return songs, nil
 }
