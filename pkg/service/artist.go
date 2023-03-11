@@ -20,3 +20,7 @@ func (s *ArtistService) CreateArtist(artist model.ArtistList) error {
 func (s *ArtistService) GetAllArtists() ([]model.ArtistList, error) {
 	return s.repo.GetAllArtists()
 }
+
+func (s *ArtistService) UpdateArtist(id int, artist model.ArtistList) error {
+	return s.repo.UpdateArtist(id, artist)
+}

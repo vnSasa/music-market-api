@@ -40,43 +40,65 @@
                 <div id="add-artist-form" class="mb-5 d-none">
                     <h1>Add Artist</h1>
                     <form action="/api_admin/create_artist" class="lead" method="post">
-                        <label>name of artist or band</label><br>
-                        <input type="text" name="name_artist" /><br><br>
-                        <label>date of birth or establishment</label><br>
-                        <input type="text" name="date_of_birth" /><br><br>
-                        <label>about artist or band</label><br>
-                        <input type="text" name="about_artist" /><br><br>
-                        <input type="submit" value="Add Artist">
+                        <div class="form-group">
+                            <label for="name_artist">name of artist or band</label>
+                            <input type="text" class="form-control" name="name_artist" id="name_artist">
+                        </div>
+                        <div class="form-group">
+                            <label for="date_of_birth">date of birth or establishment</label>
+                            <input type="text" class="form-control" name="date_of_birth" id="date_of_birth">
+                        </div>
+                        <div class="form-group">
+                            <label for="about_artist">about artist or band</label>
+                            <textarea class="form-control" name="about_artist" id="about_artist" rows="5"></textarea>
+                        </div>
+                        <input type="submit" value="Add Artist" class="btn btn-primary">
                     </form>
                 </div>
                 <div id="add-song-form" class="mb-5 d-none">
                     <h1>Add Song</h1>
                     <form action="/api_admin/create_song" class="lead" method="post">
-                        <label>id of artist</label><br>
-                        <input type="text" name="artist_id" /><br><br>
-                        <label>name of song</label><br>
-                        <input type="text" name="name_song" /><br><br>
-                        <label>genre</label><br>
-                        <input type="text" name="genre" /><br><br>
-                        <label>alternative genre</label><br>
-                        <input type="text" name="second_genre" /><br><br>
-                        <label>year of release</label><br>
-                        <input type="text" name="year_of_release" /><br><br>
-                        <input type="submit" value="Add Song">
+                        <div class="form-group">
+                            <label for="artist_id">id of artist</label>
+                            <input type="text" class="form-control" name="artist_id" id="artist_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="name_song">name of song</label>
+                            <input type="text" class="form-control" name="name_song" id="name_song">
+                        </div>
+                        <div class="form-group">
+                            <label for="genre">genre</label>
+                            <select name="genre" class="form-control" id="genre" aria-label="Default select example">
+                                <option selected></option>
+                                <option value="rock">rock</option>
+                                <option value="pop">pop</option>
+                                <option value="hip-hop">hip-hop</option>
+                                <option value="jazz">jazz</option>
+                                <option value="classical">classical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="second_genre">alternative genre</label>
+                            <select name="second_genre" class="form-control" id="second_genre" aria-label="Default select example">
+                                <option selected></option>
+                                <option value="rock">rock</option>
+                                <option value="pop">pop</option>
+                                <option value="hip-hop">hip-hop</option>
+                                <option value="jazz">jazz</option>
+                                <option value="classical">classical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="year_of_release">year of release</label>
+                            <input type="text" class="form-control" name="year_of_release" id="year_of_release">
+                        </div>
+                        <input type="submit" value="Add Song" class="btn btn-primary">
                     </form>
                 </div>
             </div>
         </main>
 
-        <script>
-            document.getElementById("add-artist-btn").addEventListener("click", function() {
-                document.getElementById("add-artist-form").classList.toggle("d-none");
-            });
-        
-            document.getElementById("add-song-btn").addEventListener("click", function() {
-                document.getElementById("add-song-form").classList.toggle("d-none");
-            });
-        </script>
+        <script src="/js/createArtist_Song.js"></script>
 
         <footer class="mt-auto text-white-50">
             <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
