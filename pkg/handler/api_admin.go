@@ -13,6 +13,10 @@ func (h *Handler) mainPage(c *gin.Context) {
 }
 
 func (h *Handler) createArtist(c *gin.Context) {
+	c.HTML(http.StatusOK, "create_artist.html", nil)
+}
+
+func (h *Handler) saveArtist(c *gin.Context) {
 	var input model.ArtistList
 	if err := c.ShouldBind(&input); err != nil {
 		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")
@@ -29,6 +33,18 @@ func (h *Handler) createArtist(c *gin.Context) {
 }
 
 func (h *Handler) createSong(c *gin.Context) {
+	artists, err := h.services.Artists.GetAllArtists()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "create_song.html", gin.H{
+		"Artists": artists,
+	})
+}
+
+func (h *Handler) saveSong(c *gin.Context) {
 	var input model.SongList
 	if err := c.ShouldBind(&input); err != nil {
 		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")

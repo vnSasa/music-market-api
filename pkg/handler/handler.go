@@ -33,16 +33,19 @@ func (h *Handler) InitRoute() *gin.Engine {
 
 	auth.Use(h.saveAccessToken)
 
-	admin := router.Group("/api_admin")
+	admin := router.Group("/api_admin", h.adminIdentity)
 	{
 		admin.GET("/main_page", h.mainPage)
-		admin.POST("/create_artist", h.createArtist)
+		
+		admin.GET("/create_artist", h.createArtist)
+		admin.POST("/save_artist", h.saveArtist)
 		admin.GET("/update_artist/:id", h.updateArtist)
 		admin.POST("/save_changes/:id", h.saveChanges)
 		admin.GET("/artist", h.getAllArtist)
-		admin.POST("/create_song", h.createSong)
+		
+		admin.GET("/create_song", h.createSong)
+		admin.POST("/save_song", h.saveSong)
 		admin.GET("/song", h.getAllSong)
-		// admin.POST("/update_song", h.updateSong)
 	}
 
 	return router
