@@ -42,7 +42,7 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 		return nil, err
 	}
 
-	var isAdmin bool
+	isAdmin := true
 	if strings.Compare(login, viper.GetString("admin.Login")) != 0 {
 		isAdmin = false
 	}
