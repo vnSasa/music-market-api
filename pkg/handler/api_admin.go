@@ -54,7 +54,7 @@ func (h *Handler) updateArtist(c *gin.Context) {
 	})
 }
 
-func (h *Handler) saveChanges(c *gin.Context) {
+func (h *Handler) saveChangesArtist(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
@@ -122,6 +122,43 @@ func (h *Handler) saveSong(c *gin.Context) {
 	c.HTML(http.StatusOK, "main_page_admin.html", nil)
 }
 
+func (h *Handler) updateSong(c *gin.Context) {
+	id := c.Param("id")
+
+	artists, err := h.services.Artists.GetAllArtists()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "update_song.html", gin.H{
+		"id": id,
+		"Artists": artists,
+	})
+}
+
+func (h *Handler) saveChangesSong(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+
+		return
+	}
+	var input model.SongList
+	if err := c.ShouldBind(&input); err != nil {
+		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")
+
+		return
+	}
+	err = h.services.Songs.UpdateSong(id, input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
+}
+
 func (h *Handler) getAllSong(c *gin.Context) {
 	var songList []model.SongData
 	songs, err := h.services.Songs.GetAllSongs()
@@ -155,4 +192,40 @@ func (h *Handler) getAllSong(c *gin.Context) {
 		"Songs": songList,
 	})
 }
+
+func (h *Handler) getPlaylist(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+
+		return
+	}
+	songs, err := h.services.Songs.GetPlaylist(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "playlist.html", gin.H{
+		"Songs": songs,
+	})
+}
+
+func (h *Handler) deleteSong(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+
+		return
+	}
+	err = h.services.Songs.DeleteSong(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "main_page_admin.html", nil)
+}
+
+
 

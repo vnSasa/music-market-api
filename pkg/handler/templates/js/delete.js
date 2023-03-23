@@ -13,3 +13,19 @@ function deleteArtist(id) {
         .catch(error => console.log('Error delete:', error));
     }
 }
+
+function deleteSong(id) {
+    if (confirm('Are you sure you want to delete this song?')) {
+        fetch(`/api_admin/delete_song/${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/api_admin/main_page';
+            } else {
+                console.log('Error delete:', response.status);
+            }
+        })
+        .catch(error => console.log('Error delete:', error));
+    }
+}

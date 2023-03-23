@@ -21,6 +21,9 @@ type Artists interface {
 type Songs interface {
 	CreateSong(song model.SongList) error
 	GetAllSongs() ([]model.SongList, error)
+	UpdateSong(id int, song model.SongList) error
+	DeleteSong(id int) error
+	GetPlaylist(id int) ([]model.SongList, error)
 }
 
 type UsersLibrary interface{}

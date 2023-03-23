@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,6 +13,7 @@
 
 <body class="d-flex h-100 text-center text-bg-dark">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
         <header class="mb-auto">
             <div>
                 <h3 class="float-md-start mb-0">Cover</h3>
@@ -44,34 +44,30 @@
             </div>
         </header>
 
-        <h1>Artist Information</h1>
-        <table class="table table-dark table-hover">
+        <h1>Playlist By Artist</h1>
+	    <table class="table table-dark table-hover">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Name Artist or Band</th>
-                    <th>Date of Birth/Establishment</th>
-                    <th>About</th>
+                    <th>Name</th>
+                    <th>Genre</th>
+                    <th>Second Genre</th>
+                    <th>Year</th>
                 </tr>
             </thead>
             <tbody>
-                {{range .Artists}}
+                {{range .Songs}}
                 <tr>
                     <td>{{.ID}}</td>
                     <td>{{.Name}}</td>
-                    <td>{{.Birth}}</td>
-                    <td>{{.About}}</td>
-                    <td>
-                        <a class="btn btn-primary" href="/api_admin/update_artist/{{.ID}}">Edit</a>
-                        <a class="btn btn-primary" href="#" onclick="deleteArtist('{{.ID}}')">Delete</a>
-                        <a class="btn btn-primary" href="/api_admin/playlist/{{.ID}}">Playlist</a>
-                    </td>
+                    <td>{{.Genre}}</td>
+                    <td>{{.Genre2}}</td>
+                    <td>{{.Year}}</td>
                 </tr>
                 {{end}}
             </tbody>
         </table>
-        <script src="/js/delete.js"></script>
-                
+
         <footer class="mt-auto text-white-50">
             <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
         </footer>
@@ -80,3 +76,5 @@
 </body>
 
 </html>
+
+

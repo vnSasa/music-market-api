@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,17 +18,6 @@ func saveAccessToken(c *gin.Context) {
 		c.Set(atData, "")
 	} else {
 		c.Set(atData, accessTokenValue)
-	}
-	c.Next()
-}
-
-func methodOverride(c *gin.Context) {
-	mainMethod := c.Request.Method
-	fmt.Println(mainMethod)
-	method := c.Request.FormValue("_method")
-	if mainMethod == "POST" && (method == "PUT" || method == "DELETE") {
-		c.Request.Method = method
-		fmt.Println(c.Request.Method)
 	}
 	c.Next()
 }

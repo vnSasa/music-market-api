@@ -46,7 +46,7 @@
 
         <main role="main" class="inner cover">
             <div class="container">
-                <form action="/api_admin/save_changes/{{.id}}" id="update-artist-form" class="lead" method="POST">
+                <form action="/api_admin/save_changes_artist/{{.id}}" id="update-form" class="lead" method="POST">
                     <div class="form-group">
                         <label for="name_artist">name of artist or band</label>
                         <input type="text" class="form-control" name="name_artist" id="name_artist" required value="{{.Name}}">
