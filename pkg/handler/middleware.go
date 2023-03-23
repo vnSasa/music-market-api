@@ -1,8 +1,10 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
 	model "github.com/vnSasa/music-market-api/model"
 )
 
@@ -10,7 +12,7 @@ const (
 	atData = "accessToken"
 )
 
-func (h *Handler) saveAccessToken(c *gin.Context) {
+func saveAccessToken(c *gin.Context) {
 	accessTokenValue, err := c.Cookie(atData)
 	if err != nil {
 		c.Set(atData, "")
@@ -45,5 +47,4 @@ func (h *Handler) adminIdentity(c *gin.Context) {
 
 		return
 	}
-
 }

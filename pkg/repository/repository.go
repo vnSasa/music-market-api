@@ -15,11 +15,15 @@ type Artists interface {
 	CreateArtist(artist model.ArtistList) error
 	GetAllArtists() ([]model.ArtistList, error)
 	UpdateArtist(id int, artist model.ArtistList) error
+	DeleteArtist(id int) error
 }
 
 type Songs interface {
 	CreateSong(song model.SongList) error
 	GetAllSongs() ([]model.SongList, error)
+	UpdateSong(id int, song model.SongList) error
+	DeleteSong(id int) error
+	GetPlaylist(id int) ([]model.SongList, error)
 }
 
 type UsersLibrary interface{}

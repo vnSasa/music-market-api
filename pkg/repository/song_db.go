@@ -62,3 +62,48 @@ func (r *SongDB) GetAllSongs() ([]model.SongList, error) {
 
 	return songs, nil
 }
+
+func (r *SongDB) UpdateSong(id int, song model.SongList) error {
+	query := fmt.Sprintf("UPDATE %s SET artist_id=?, name_song=?, genre=?, second_genre=?, year_of_release=? WHERE id=?", songTable)
+	 
+	_, err := r.db.Exec(query, song.ArtistID, song.Name, song.Genre, song.Genre2, song.Year, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *SongDB) DeleteSong(id int) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=?", songTable)
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *SongDB) GetPlaylist(id int) ([]model.SongList, error) {
+	var songs []model.SongList
+	query := fmt.Sprintf("SELECT id, name_song, genre, second_genre, year_of_release FROM %s WHERE artist_id=?", songTable)
+
+	rows, err := r.db.Query(query, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var song model.SongList
+		err = rows.Scan(&song.ID, &song.Name, &song.Genre, &song.Genre2, &song.Year)
+		if err != nil {
+			return nil, err
+		}
+		songs = append(songs, song)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return songs, nil
+}

@@ -24,3 +24,7 @@ func (s *ArtistService) GetAllArtists() ([]model.ArtistList, error) {
 func (s *ArtistService) UpdateArtist(id int, artist model.ArtistList) error {
 	return s.repo.UpdateArtist(id, artist)
 }
+
+func (s *ArtistService) DeleteArtist(id int) error {
+	return s.repo.DeleteArtist(id)
+}

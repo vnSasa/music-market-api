@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
     integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
     crossorigin="anonymous">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/5.2/examples/cover/cover.css">
 </head>
 
 <body class="d-flex h-100 text-center text-bg-dark">
@@ -17,10 +18,28 @@
             <div>
                 <h3 class="float-md-start mb-0">Cover</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a class="btn btn-dark" href="/api_admin/main_page">Create Menu</a>
-                    <form action="/auth/logout" class="nav-link fw-bold py-1 px-0" method="post">
-                        <input type="submit" value="LogOut">
-                    </form>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_admin/main_page" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">Home</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_admin/create_artist" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">Add Artist</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_admin/artist" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">All Artist</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_admin/create_song" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">Add Song</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_admin/song" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">All Song</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/auth/logout" class="nav-link fw-bold py-1 px-0" method="post">
+                                <input type="submit" value="LogOut">
+                            </form>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </header>
@@ -30,7 +49,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>ID_Artist</th>
+                    <th>Artist</th>
                     <th>Name</th>
                     <th>Genre</th>
                     <th>Second Genre</th>
@@ -41,19 +60,20 @@
                 {{range .Songs}}
                 <tr>
                     <td>{{.ID}}</td>
-                    <td>{{.ArtistID}}</td>
+                    <td>{{.ArtistData}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Genre}}</td>
                     <td>{{.Genre2}}</td>
                     <td>{{.Year}}</td>
                     <td>
-                        <a class="btn btn-primary" href="/api-admin/update_song/{{.ID}}">Edit</a>
-                        <a class="btn btn-primary" href="/api-admin/delete_song/{{.ID}}">Delete</a>
+                        <a class="btn btn-primary" href="/api_admin/update_song/{{.ID}}">Edit</a>
+                        <a class="btn btn-primary" href="#" onclick="deleteSong('{{.ID}}')">Delete</a>
                     </td>
                 </tr>
                 {{end}}
             </tbody>
         </table>
+        <script src="/js/delete.js"></script>
 
         <footer class="mt-auto text-white-50">
             <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>

@@ -20,3 +20,15 @@ func (s *SongService) CreateSong(song model.SongList) error {
 func (s *SongService) GetAllSongs() ([]model.SongList, error) {
 	return s.repo.GetAllSongs()
 }
+
+func (s *SongService) UpdateSong(id int, song model.SongList) error {
+	return s.repo.UpdateSong(id, song)
+}
+
+func (s *SongService) DeleteSong(id int) error {
+	return s.repo.DeleteSong(id)
+}
+
+func (s *SongService) GetPlaylist(id int) ([]model.SongList, error) {
+	return s.repo.GetPlaylist(id)
+}
