@@ -73,3 +73,12 @@ func (r *ArtistDB) UpdateArtist(id int, artist model.ArtistList) error {
 
 	return nil
 }
+
+func (r *ArtistDB) DeleteArtist(id int) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=?", artistTable)
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

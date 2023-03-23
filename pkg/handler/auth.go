@@ -82,6 +82,7 @@ func (h *Handler) signIn(c *gin.Context) {
 		Expires:  time.Unix(token.AtExpires, 0),
 		HttpOnly: true,
 	})
+
 	if strings.Compare(input.Login, viper.GetString("admin.Login")) == 0 {
 		c.HTML(http.StatusOK, "main_page_admin.html", nil)
 	} else {

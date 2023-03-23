@@ -1,8 +1,11 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
 	model "github.com/vnSasa/music-market-api/model"
 )
 
@@ -10,12 +13,23 @@ const (
 	atData = "accessToken"
 )
 
-func (h *Handler) saveAccessToken(c *gin.Context) {
+func saveAccessToken(c *gin.Context) {
 	accessTokenValue, err := c.Cookie(atData)
 	if err != nil {
 		c.Set(atData, "")
 	} else {
 		c.Set(atData, accessTokenValue)
+	}
+	c.Next()
+}
+
+func methodOverride(c *gin.Context) {
+	mainMethod := c.Request.Method
+	fmt.Println(mainMethod)
+	method := c.Request.FormValue("_method")
+	if mainMethod == "POST" && (method == "PUT" || method == "DELETE") {
+		c.Request.Method = method
+		fmt.Println(c.Request.Method)
 	}
 	c.Next()
 }
@@ -45,5 +59,4 @@ func (h *Handler) adminIdentity(c *gin.Context) {
 
 		return
 	}
-
 }
