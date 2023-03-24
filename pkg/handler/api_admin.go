@@ -83,6 +83,20 @@ func (h *Handler) deleteArtist(c *gin.Context) {
 
 		return
 	}
+	songs, err := h.services.Songs.GetPlaylist(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "the songs of artist not found")
+
+		return
+	}
+	for _, song := range songs {
+		err = h.services.Songs.DeleteSong(song.ID)
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	
+			return
+		}
+	}
 	err = h.services.Artists.DeleteArtist(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
