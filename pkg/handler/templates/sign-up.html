@@ -9,6 +9,8 @@
     integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
     crossorigin="anonymous">
     <link rel="stylesheet" href="https://getbootstrap.com/docs/5.2/examples/cover/cover.css">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/modals/">
+    <link href="https://getbootstrap.com/docs/5.3/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex h-100 text-center text-bg-dark">
 
@@ -18,16 +20,22 @@
             <h1>SIGN-UP</h1>
 
             <form action="/auth/new-sign-up" class="lead" method="post">
-                <label>login</label><br>
-                <input type="text" name="login" /><br><br>
-                <label>first_name</label><br>
-                <input type="text" name="first_name" /><br><br>
-                <label>last_name</label><br>
-                <input type="text" name="last_name" /><br><br>
-                <label>password</label><br>
-                <input type="text" name="password" /><br><br>
-                <input type="submit" value="Send">
-              </form>
+                <div class="col-12">
+                    <input type="text" name="login" class="col-sm-6 rounded-3" placeholder="login">
+                </div>
+                <div class="col-12">
+                    <input type="text" name="first_name" class="col-sm-6 rounded-3" placeholder="first_name">
+                </div>
+                <div class="col-12">
+                    <input type="text" name="last_name" class="col-sm-6 rounded-3"placeholder="last_name">
+                </div>
+                <div class="col-12">
+                    <input type="text" name="password" class="col-sm-6 rounded-3" placeholder="password">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-outline-success">Sign Up</button>
+                </div>
+            </form>
         </main>
 
         <footer class="mt-auto text-white-50">

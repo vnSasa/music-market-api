@@ -62,9 +62,11 @@
                     <td>{{.Birth}}</td>
                     <td>{{.About}}</td>
                     <td>
-                        <a class="btn btn-primary" href="/api_admin/update_artist/{{.ID}}">Edit</a>
-                        <a class="btn btn-primary" href="#" onclick="deleteArtist('{{.ID}}')">Delete</a>
-                        <a class="btn btn-primary" href="/api_admin/playlist/{{.ID}}">Playlist</a>
+                        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                            <a class="btn btn-outline-primary" href="/api_admin/update_artist/{{.ID}}">Edit</a>
+                            <a class="btn btn-outline-danger" href="#" onclick="deleteArtist('{{.ID}}')">Delete</a>
+                            <a class="btn btn-outline-info" href="/api_admin/playlist/{{.ID}}">Playlist</a>
+                        </div>
                     </td>
                 </tr>
                 {{end}}

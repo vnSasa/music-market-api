@@ -31,8 +31,3 @@ type SongData struct {
 	Genre2     string
 	Year       int
 }
-type UpdateArtistList struct {
-	Name  string `json:"name_artist" db:"name_artist" form:"name_artist" binding:"required"`
-	Birth string `json:"date_of_birth" db:"date_of_birth" form:"date_of_birth" binding:"required"`
-	About string `json:"about_artist" db:"about_artist" form:"about_artist"`
-}
