@@ -2,14 +2,14 @@ package handler
 
 import (
 	"net/http"
+	"errors"
 
 	"github.com/gin-gonic/gin"
-
-	model "github.com/vnSasa/music-market-api/model"
 )
 
 const (
 	atData = "accessToken"
+	rtData = "refreshToken"
 )
 
 func saveAccessToken(c *gin.Context) {
@@ -22,21 +22,31 @@ func saveAccessToken(c *gin.Context) {
 	c.Next()
 }
 
-func (h *Handler) adminIdentity(c *gin.Context) {
+func (h *Handler) getAccessToken(c *gin.Context) (string, error) {
 	accessTokenValue, err := c.Cookie(atData)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "access token not found")
+		refreshTokenValue, err := c.Cookie(rtData)
+		if err != nil {
+			return "", errors.New("token not found")
+		}
 
-		return
+		accessTokenValue, err = h.services.Authorization.RefreshToken(refreshTokenValue)
+		if err != nil {
+			return "", errors.New(err.Error())
+		}
 	}
-	accessToken, err := h.services.Authorization.ParseToken(accessTokenValue)
+
+	return accessTokenValue, nil
+}
+
+func (h *Handler) adminIdentity(c *gin.Context) {
+	accessTokenValue, err := h.getAccessToken(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 
 		return
 	}
-	red := model.GetRedisConn()
-	_, err = red.Get(c, accessToken.AtUUID).Result()
+	accessToken, err := h.services.Authorization.ParseToken(accessTokenValue)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 

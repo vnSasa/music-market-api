@@ -66,8 +66,10 @@
                     <td>{{.Genre2}}</td>
                     <td>{{.Year}}</td>
                     <td>
-                        <a class="btn btn-primary" href="/api_admin/update_song/{{.ID}}">Edit</a>
-                        <a class="btn btn-primary" href="#" onclick="deleteSong('{{.ID}}')">Delete</a>
+                        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                            <a class="btn btn-outline-primary" href="/api_admin/update_song/{{.ID}}">Edit</a>
+                            <a class="btn btn-outline-danger" href="#" onclick="deleteSong('{{.ID}}')">Delete</a>
+                        </div>
                     </td>
                 </tr>
                 {{end}}

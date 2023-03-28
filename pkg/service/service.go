@@ -9,6 +9,7 @@ type Authorization interface {
 	CreateUser(user model.User) error
 	GenerateToken(login, password string) (*model.TokenDetails, error)
 	ParseToken(accessToken string) (*model.AccessTokenClaims, error)
+	RefreshToken(refreshToken string) (string, error)
 }
 
 type Artists interface {

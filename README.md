@@ -15,10 +15,6 @@ creating a music database with the possibility of adding your favorite compositi
 
 - add the HTML files to the corresponding functionality
 
-## Before starting the project, start Redis:
-
-- docker run -d -p 6379:6379 redis
-
-## and make migrations:
+## Before starting the project, make migrations:
 
 - migrate -path ./schema -database 'mysql://sasa:110513@tcp(127.0.0.1:3306)/music-market' up

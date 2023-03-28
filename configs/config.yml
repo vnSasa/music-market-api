@@ -7,9 +7,6 @@ db:
   dbport: "3306"
   dbname: "music-market"
 
-redis:
-  Addr: "localhost:6379"
-
 admin:
   Login:  "Admin"
   Password: "Password"
