@@ -45,6 +45,12 @@
         </header>
 
         <h1>Artist Information</h1>
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search by name" id="searchInput">
+            <button class="btn btn-outline-secondary" type="button" onclick="searchArtist()">Search</button>
+        </div>
+
         <table class="table table-dark table-hover">
             <thead>
                 <tr>
@@ -56,7 +62,7 @@
             </thead>
             <tbody>
                 {{range .Artists}}
-                <tr>
+                <tr class="artistRow">
                     <td>{{.ID}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Birth}}</td>
@@ -72,6 +78,8 @@
                 {{end}}
             </tbody>
         </table>
+
+        <script src="/js/search_artist.js"></script>
         <script src="/js/delete.js"></script>
                 
         <footer class="mt-auto text-white-50">
