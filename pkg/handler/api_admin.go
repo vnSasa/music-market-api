@@ -8,8 +8,10 @@ import (
 	"github.com/vnSasa/music-market-api/model"
 )
 
-func (h *Handler) mainPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "main_page_admin.html", nil)
+func (h *Handler) mainPageAdmin(c *gin.Context) {
+	c.HTML(http.StatusOK, "main_page.html", gin.H{
+		"IsAdmin": true,
+	})
 }
 
 // API FOR ARTISTS
@@ -21,7 +23,7 @@ func (h *Handler) createArtist(c *gin.Context) {
 func (h *Handler) saveArtist(c *gin.Context) {
 	var input model.ArtistList
 	if err := c.ShouldBind(&input); err != nil {
-		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")
+		c.Redirect(http.StatusBadRequest, "/api_admin/main_page")
 
 		return
 	}
@@ -31,10 +33,12 @@ func (h *Handler) saveArtist(c *gin.Context) {
 
 		return
 	}
-	c.HTML(http.StatusOK, "main_page_admin.html", nil)
+	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 }
 
 func (h *Handler) getAllArtist(c *gin.Context) {
+	isAdmin := true
+
 	artists, err := h.services.Artists.GetAllArtists()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -43,6 +47,7 @@ func (h *Handler) getAllArtist(c *gin.Context) {
 	}
 	c.HTML(http.StatusOK, "get_artist.html", gin.H{
 		"Artists": artists,
+		"IsAdmin": isAdmin,
 	})
 }
 
@@ -63,7 +68,7 @@ func (h *Handler) saveChangesArtist(c *gin.Context) {
 	}
 	var input model.ArtistList
 	if err := c.ShouldBind(&input); err != nil {
-		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")
+		c.Redirect(http.StatusBadRequest, "/api_admin/main_page")
 
 		return
 	}
@@ -93,7 +98,7 @@ func (h *Handler) deleteArtist(c *gin.Context) {
 		err = h.services.Songs.DeleteSong(song.ID)
 		if err != nil {
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())
-	
+
 			return
 		}
 	}
@@ -103,7 +108,7 @@ func (h *Handler) deleteArtist(c *gin.Context) {
 
 		return
 	}
-	c.HTML(http.StatusOK, "main_page_admin.html", nil)
+	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 }
 
 // API FOR SONGS
@@ -123,7 +128,7 @@ func (h *Handler) createSong(c *gin.Context) {
 func (h *Handler) saveSong(c *gin.Context) {
 	var input model.SongList
 	if err := c.ShouldBind(&input); err != nil {
-		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")
+		c.Redirect(http.StatusBadRequest, "main_page.html")
 
 		return
 	}
@@ -133,7 +138,7 @@ func (h *Handler) saveSong(c *gin.Context) {
 
 		return
 	}
-	c.HTML(http.StatusOK, "main_page_admin.html", nil)
+	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 }
 
 func (h *Handler) updateSong(c *gin.Context) {
@@ -146,7 +151,7 @@ func (h *Handler) updateSong(c *gin.Context) {
 		return
 	}
 	c.HTML(http.StatusOK, "update_song.html", gin.H{
-		"id": id,
+		"id":      id,
 		"Artists": artists,
 	})
 }
@@ -160,7 +165,7 @@ func (h *Handler) saveChangesSong(c *gin.Context) {
 	}
 	var input model.SongList
 	if err := c.ShouldBind(&input); err != nil {
-		c.HTML(http.StatusBadRequest, "main_page_admin.html", "invalid input body")
+		c.Redirect(http.StatusBadRequest, "main_page.html")
 
 		return
 	}
@@ -174,6 +179,8 @@ func (h *Handler) saveChangesSong(c *gin.Context) {
 }
 
 func (h *Handler) getAllSong(c *gin.Context) {
+	isAdmin := true
+
 	var songList []model.SongData
 	songs, err := h.services.Songs.GetAllSongs()
 	if err != nil {
@@ -203,7 +210,8 @@ func (h *Handler) getAllSong(c *gin.Context) {
 		})
 	}
 	c.HTML(http.StatusOK, "get_song.html", gin.H{
-		"Songs": songList,
+		"Songs":   songList,
+		"IsAdmin": isAdmin,
 	})
 }
 
@@ -238,8 +246,6 @@ func (h *Handler) deleteSong(c *gin.Context) {
 
 		return
 	}
-	c.HTML(http.StatusOK, "main_page_admin.html", nil)
+	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 }
-
-
 

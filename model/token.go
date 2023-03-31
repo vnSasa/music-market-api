@@ -13,13 +13,13 @@ type TokenDetails struct {
 
 type AccessTokenClaims struct {
 	jwt.StandardClaims
-	UserID  int    `json:"user_id"`
-	IsAdmin bool   `json:"is_admin"`
+	UserID  int  `json:"user_id"`
+	IsAdmin bool `json:"is_admin"`
 }
 
 type RefreshTokenClaims struct {
 	jwt.StandardClaims
-	UserID    int    `json:"user_id"`
-	IsAdmin   bool   `json:"is_admin"`
-	IsRefresh bool   `json:"is_refresh"`
+	UserID    int  `json:"user_id"`
+	IsAdmin   bool `json:"is_admin"`
+	IsRefresh bool `json:"is_refresh"`
 }

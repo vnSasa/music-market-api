@@ -27,7 +27,9 @@ type Songs interface {
 	GetPlaylist(id int) ([]model.SongList, error)
 }
 
-type UsersLibrary interface{}
+type UsersLibrary interface {
+	GetUserPlaylist(id int) ([]model.SongList, error)
+}
 
 type Service struct {
 	Authorization
@@ -41,5 +43,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos.Authorization),
 		Artists:       NewArtistService(repos.Artists),
 		Songs:         NewSongService(repos.Songs),
+		UsersLibrary:  NewUsersLibrary(repos.UsersLibrary),
 	}
 }

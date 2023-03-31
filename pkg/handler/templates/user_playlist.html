@@ -59,7 +59,7 @@
             </div>
         </header>
 
-        <h1>Song Information</h1>
+        <h1>My Playlist</h1>
 
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Search by name" id="searchInput">
@@ -78,7 +78,6 @@
                 </tr>
             </thead>
             <tbody>
-                {{ if .IsAdmin }}
                 {{range .Songs}}
                 <tr class="songRow">
                     <td>{{.ID}}</td>
@@ -89,29 +88,11 @@
                     <td>{{.Year}}</td>
                     <td>
                         <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                            <a class="btn btn-outline-primary" href="/api_admin/update_song/{{.ID}}">Edit</a>
-                            <a class="btn btn-outline-danger" href="#" onclick="deleteSong('{{.ID}}')">Delete</a>
-                        </div>
-                    </td>
-                </tr>
-                {{end}}
-                {{ else }}
-                {{range .Songs}}
-                <tr class="songRow">
-                    <td>{{.ID}}</td>
-                    <td>{{.ArtistData}}</td>
-                    <td>{{.Name}}</td>
-                    <td>{{.Genre}}</td>
-                    <td>{{.Genre2}}</td>
-                    <td>{{.Year}}</td>
-                    <td>
-                        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                            <a class="btn btn-outline-primary" href="/api_user/add_to_favourite/{{.ID}}">+</a>
+                            <a class="btn btn-outline-primary" href="/api_user/from_delete_favourite/{{.ID}}">-</a>
                         </div>
                         
                     </td>
                 </tr>
-                {{ end }}
                 {{end}}
             </tbody>
         </table>

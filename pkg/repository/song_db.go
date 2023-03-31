@@ -65,7 +65,7 @@ func (r *SongDB) GetAllSongs() ([]model.SongList, error) {
 
 func (r *SongDB) UpdateSong(id int, song model.SongList) error {
 	query := fmt.Sprintf("UPDATE %s SET artist_id=?, name_song=?, genre=?, second_genre=?, year_of_release=? WHERE id=?", songTable)
-	 
+
 	_, err := r.db.Exec(query, song.ArtistID, song.Name, song.Genre, song.Genre2, song.Year, id)
 	if err != nil {
 		return err
@@ -80,6 +80,7 @@ func (r *SongDB) DeleteSong(id int) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 

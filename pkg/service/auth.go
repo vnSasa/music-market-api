@@ -49,7 +49,7 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 	td.AtExpires = time.Now().Add(time.Minute * timeForAccessToken).Unix()
 
 	td.RtExpires = time.Now().Add(time.Hour * timeForRefreshToken).Unix()
-	
+
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.AccessTokenClaims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: td.AtExpires,

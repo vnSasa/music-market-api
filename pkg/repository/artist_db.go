@@ -80,5 +80,6 @@ func (r *ArtistDB) DeleteArtist(id int) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
