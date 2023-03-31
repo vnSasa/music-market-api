@@ -14,11 +14,13 @@
 
 <body class="d-flex h-100 text-center text-bg-dark">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-start mb-0">Cover</h3>
+                <h3 class="float-md-start mb-0">Music Market</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <ul class="nav nav-tabs" role="tablist">
+                        {{ if .IsAdmin }}
                         <li class="nav-item" role="presentation">
                             <a href="/api_admin/main_page" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">Home</a>
                         </li>
@@ -34,6 +36,20 @@
                         <li class="nav-item" role="presentation">
                             <a href="/api_admin/song" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">All Song</a>
                         </li>
+                        {{ else }}
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_user/main_page" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">Home</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_user/get_artist" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">Artist</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_user/get_song" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">Song</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="/api_user/user_playlist" class="nav-link" role="tab" type="button" data-bs-toggle="tab" aria-controls="home-tab-pane">My Playlist</a>
+                        </li>
+                        {{ end }}
                         <li class="nav-item">
                             <form action="/auth/logout" class="nav-link fw-bold py-1 px-0" method="post">
                                 <input type="submit" value="LogOut">

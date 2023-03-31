@@ -35,7 +35,7 @@ func (h *Handler) InitRoute() *gin.Engine {
 
 	admin := router.Group("/api_admin", h.adminIdentity)
 	{
-		admin.GET("/main_page", h.mainPage)
+		admin.GET("/main_page", h.mainPageAdmin)
 
 		admin.GET("/create_artist", h.createArtist)
 		admin.POST("/save_artist", h.saveArtist)
@@ -51,6 +51,15 @@ func (h *Handler) InitRoute() *gin.Engine {
 		admin.GET("/song", h.getAllSong)
 		admin.GET("/playlist/:id", h.getPlaylist)
 		admin.DELETE("/delete_song/:id", h.deleteSong)
+	}
+
+	user := router.Group("/api_user", h.userIdentity)
+	{
+		user.GET("/main_page", h.mainPageUser)
+
+		user.GET("/get_song", h.getSongs)
+		user.GET("/get_artist", h.getArtist)
+		user.GET("/user_playlist", h.getUserPlaylist)
 	}
 
 	return router

@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"net/http"
 	"errors"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -57,4 +57,38 @@ func (h *Handler) adminIdentity(c *gin.Context) {
 
 		return
 	}
+}
+
+func (h *Handler) userIdentity(c *gin.Context) {
+	accessTokenValue, err := h.getAccessToken(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	accessToken, err := h.services.Authorization.ParseToken(accessTokenValue)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	if accessToken.IsAdmin {
+		newErrorResponse(c, http.StatusInternalServerError, "only user have access")
+
+		return
+	}
+}
+
+func (h *Handler) getUserID(c *gin.Context) (int, error) {
+	accessTokenValue, err := h.getAccessToken(c)
+	if err != nil {
+		return 0, errors.New(err.Error())
+	}
+
+	accessToken, err := h.services.Authorization.ParseToken(accessTokenValue)
+	if err != nil {
+		return 0, errors.New(err.Error())
+	}
+
+	return accessToken.UserID, nil
 }

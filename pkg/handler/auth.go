@@ -74,9 +74,9 @@ func (h *Handler) signIn(c *gin.Context) {
 	})
 
 	if strings.Compare(input.Login, viper.GetString("admin.Login")) == 0 {
-		c.HTML(http.StatusOK, "main_page_admin.html", nil)
+		c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 	} else {
-		c.HTML(http.StatusOK, "main_page_user.html", nil)
+		c.Redirect(http.StatusSeeOther, "/api_user/main_page")
 	}
 }
 

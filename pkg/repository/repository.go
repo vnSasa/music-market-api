@@ -26,7 +26,9 @@ type Songs interface {
 	GetPlaylist(id int) ([]model.SongList, error)
 }
 
-type UsersLibrary interface{}
+type UsersLibrary interface {
+	GetUserPlaylist(id int) ([]model.SongList, error)
+}
 
 type Repository struct {
 	Authorization
@@ -40,5 +42,6 @@ func NewRepository(db *sql.DB) *Repository {
 		Authorization: NewAuthDB(db),
 		Artists:       NewArtistDB(db),
 		Songs:         NewSongDB(db),
+		UsersLibrary:  NewLibraryDB(db),
 	}
 }
