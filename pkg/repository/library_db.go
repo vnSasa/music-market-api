@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 
 	model "github.com/vnSasa/music-market-api/model"
@@ -39,4 +40,35 @@ func (r *LibraryDB) GetUserPlaylist(id int) ([]model.SongList, error) {
 	}
 
 	return songs, nil
+}
+
+func (r *LibraryDB) AddToPlaylist(userID, songID int) error {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var count int
+	err = r.db.QueryRow("SELECT COUNT(*) FROM "+libraryTable+" WHERE user_id = ? AND song_id = ?", userID, songID).Scan(&count)
+	if err != nil {
+		return err
+	}
+
+	if count > 0 {
+		return errors.New("song already in playlist")
+	}
+
+	query := fmt.Sprintf("INSERT INTO %s (user_id, song_id) VALUES (?, ?)", libraryTable)
+
+	_, err = r.db.Exec(query, userID, songID)
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
 }

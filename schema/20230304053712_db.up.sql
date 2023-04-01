@@ -29,5 +29,5 @@ CREATE TABLE user_library
 (
     id serial not null unique,
     user_id int references users (id) on delete cascade,
-    song_id int references song (id) on delete cascade
+    song_id int references song (id) on delete cascade unique
 );

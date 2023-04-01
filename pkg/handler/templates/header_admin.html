@@ -1,3 +1,5 @@
+{{ define "header_admin" }}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,25 +45,4 @@
             </div>
         </header>
 
-        <main role="main" class="inner cover">
-            <div class="container">
-                <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="/api_admin/create_artist" class="btn btn-outline-success" role="button" data-bs-toggle="button">Create Artist</a>
-                    <a href="/api_admin/artist" class="btn btn-outline-info" role="button" data-bs-toggle="button">Get Artist`s list</a>
-                </div>
-                <br>
-                <div class="d-grid gap-2 col-6 mx-auto">
-                    <a href="/api_admin/create_song" class="btn btn-outline-success" role="button" data-bs-toggle="button">Create Song</a>
-                    <a href="/api_admin/song" class="btn btn-outline-info" role="button" data-bs-toggle="button">Get Song`s list</a>
-                </div>
-            </div>
-            
-        </main>
-
-        <footer class="mt-auto text-white-50">
-            <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
-        </footer>
-
-    </div>
-</body>
-</html>
+{{ end }}
