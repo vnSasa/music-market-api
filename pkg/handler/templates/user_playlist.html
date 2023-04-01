@@ -29,7 +29,7 @@
                     <td>{{.Year}}</td>
                     <td>
                         <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                            <a class="btn btn-outline-primary" href="/api_user/from_delete_favourite/{{.ID}}">-</a>
+                            <a class="btn btn-outline-danger" href="#" onclick="deleteSongFromPlaylist('{{.ID}}')">-</a>
                         </div>  
                     </td>
                 </tr>
@@ -38,7 +38,7 @@
         </table>
 
         <script src="/js/search.js"></script>
-        <script src="/js/delete.js"></script>
+        <script src="/js/playlist.js"></script>
 
         {{ template "footer" }}
 

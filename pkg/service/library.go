@@ -20,3 +20,7 @@ func (s *LibraryService) GetUserPlaylist(id int) ([]model.SongList, error) {
 func (s *LibraryService) AddToPlaylist(userID, songID int) error {
 	return s.repo.AddToPlaylist(userID, songID)
 }
+
+func (s *LibraryService) DeleteSongFromPlaylist(songID int) error {
+	return s.repo.DeleteSongFromPlaylist(songID)
+}

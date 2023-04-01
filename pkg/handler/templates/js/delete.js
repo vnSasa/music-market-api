@@ -5,7 +5,7 @@ function deleteArtist(id) {
         })
         .then(response => {
             if (response.ok) {
-                window.location.href = '/api_admin/main_page';
+                window.location.href = '/api_admin/artist';
             } else {
                 console.log('Error delete:', response.status);
             }
@@ -21,7 +21,7 @@ function deleteSong(id) {
         })
         .then(response => {
             if (response.ok) {
-                window.location.href = '/api_admin/main_page';
+                window.location.href = '/api_admin/song';
             } else {
                 console.log('Error delete:', response.status);
             }

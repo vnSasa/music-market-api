@@ -16,6 +16,7 @@
                 </tr>
             </thead>
             <tbody>
+                {{ if .IsAdmin}}
                 {{range .Songs}}
                 <tr>
                     <td>{{.ID}}</td>
@@ -25,8 +26,26 @@
                     <td>{{.Year}}</td>
                 </tr>
                 {{end}}
+                {{ else }}
+                {{range .Songs}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td>{{.Name}}</td>
+                    <td>{{.Genre}}</td>
+                    <td>{{.Genre2}}</td>
+                    <td>{{.Year}}</td>
+                    <td>
+                        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                            <a class="btn btn-outline-primary" href="#" onclick="addToPlaylist('{{.ID}}')">+</a>
+                        </div>
+                    </td>
+                </tr>
+                {{end}}
+                {{ end }}
             </tbody>
         </table>
+
+        <script src="/js/playlist.js"></script>
 
         {{ template "footer" }}
 
