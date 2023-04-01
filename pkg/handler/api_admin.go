@@ -216,6 +216,7 @@ func (h *Handler) getAllSong(c *gin.Context) {
 }
 
 func (h *Handler) getPlaylist(c *gin.Context) {
+	isAdmin := true
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
@@ -229,7 +230,8 @@ func (h *Handler) getPlaylist(c *gin.Context) {
 		return
 	}
 	c.HTML(http.StatusOK, "playlist.html", gin.H{
-		"Songs": songs,
+		"Songs":   songs,
+		"IsAdmin": isAdmin,
 	})
 }
 

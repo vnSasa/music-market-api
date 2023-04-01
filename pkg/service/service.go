@@ -30,6 +30,7 @@ type Songs interface {
 type UsersLibrary interface {
 	GetUserPlaylist(id int) ([]model.SongList, error)
 	AddToPlaylist(userID, songID int) error
+	DeleteSongFromPlaylist(songID int) error
 }
 
 type Service struct {

@@ -72,3 +72,23 @@ func (r *LibraryDB) AddToPlaylist(userID, songID int) error {
 
 	return nil
 }
+
+func (r *LibraryDB) DeleteSongFromPlaylist(songID int) error {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	query := fmt.Sprintf("DELETE FROM %s WHERE song_id=?", libraryTable)
+	_, err = r.db.Exec(query, songID)
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
+}
