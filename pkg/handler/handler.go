@@ -60,6 +60,8 @@ func (h *Handler) InitRoute() *gin.Engine {
 		user.GET("/get_song", h.getSongs)
 		user.GET("/get_artist", h.getArtist)
 		user.GET("/user_playlist", h.getUserPlaylist)
+
+		user.POST("/add_to_playlist/:id", h.addToPlaylist)
 	}
 
 	return router

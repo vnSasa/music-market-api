@@ -16,3 +16,7 @@ func NewUsersLibrary(repo repository.UsersLibrary) *LibraryService {
 func (s *LibraryService) GetUserPlaylist(id int) ([]model.SongList, error) {
 	return s.repo.GetUserPlaylist(id)
 }
+
+func (s *LibraryService) AddToPlaylist(userID, songID int) error {
+	return s.repo.AddToPlaylist(userID, songID)
+}

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -96,4 +97,26 @@ func (h *Handler) getUserPlaylist(c *gin.Context) {
 	c.HTML(http.StatusOK, "user_playlist.html", gin.H{
 		"Songs": songList,
 	})
+}
+
+func (h *Handler) addToPlaylist(c *gin.Context) {
+	userID, err := h.getUserID(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	songID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+
+		return
+	}
+	err = h.services.UsersLibrary.AddToPlaylist(userID, songID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.Redirect(http.StatusSeeOther, "/api_user/user_playlist")
 }
