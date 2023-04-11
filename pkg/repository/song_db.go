@@ -23,6 +23,16 @@ func (r *SongDB) CreateSong(song model.SongList) error {
 	}
 	defer tx.Rollback()
 
+	var count int
+	checkQuery := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE artist_id = ? AND name_song = ?", songTable)
+	err = r.db.QueryRow(checkQuery, song.ArtistID, song.Name).Scan(&count)
+	if err != nil {
+		return errors.New(err.Error())
+	}
+	if count > 0 {
+		return errors.New("Song already exists")
+	}
+
 	query := fmt.Sprintf("INSERT INTO %s (artist_id, name_song, genre, second_genre, year_of_release)"+
 		"VALUES (?, ?, ?, ?, ?)", songTable)
 

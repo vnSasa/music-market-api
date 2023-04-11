@@ -18,6 +18,16 @@
                     <input type="hidden" name="id" value="{{.id}}">
                     <button type="submit" class="btn btn-outline-success">Save</button>
                 </form>
+                <script>
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const name = urlParams.get('name');
+                    const birth = urlParams.get('birth');
+                    const about = urlParams.get('about');
+
+                    document.getElementById('name_artist').value = name;
+                    document.getElementById('date_of_birth').value = birth;
+                    document.getElementById('about_artist').value = about;
+                </script>
                 <script src="/js/update.js"></script>
             </div>
         </main>

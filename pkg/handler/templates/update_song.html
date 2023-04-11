@@ -45,6 +45,23 @@
                     <input type="hidden" name="id" value="{{.id}}">
                     <button type="submit" class="btn btn-outline-success">Save</button>
                 </form>
+                {{ if .BadData }}
+                    <div class="alert alert-danger" role="alert">
+                    Incorrect data was entered to create a song!
+                    </div>
+                {{ end }}
+                <script>
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const name = urlParams.get('name');
+                    const genre = urlParams.get('genre');
+                    const genre2 = urlParams.get('genre2');
+                    const year = urlParams.get('year');
+
+                    document.getElementById('name_song').value = name;
+                    document.getElementById('genre').value = genre;
+                    document.getElementById('second_genre').value = genre2;
+                    document.getElementById('year_of_release').value = year;
+                </script>
                 <script src="/js/update.js"></script>
             </div>
         </main>
