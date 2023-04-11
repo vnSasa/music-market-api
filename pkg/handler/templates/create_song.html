@@ -46,6 +46,18 @@
                     <input type="submit" value="Add Song" class="btn btn-outline-success">
                 </form>
             </div> 
+
+                {{ if .BadData }}
+                    <div class="alert alert-danger" role="alert">
+                    Incorrect data was entered to create a song!
+                    </div>
+                {{ end }}
+                {{ if .ReplayData }}
+                    <div class="alert alert-danger" role="alert">
+                    The song is already exists!
+                    </div>
+                {{ end }}
+
         </main>
 
         {{ template "footer" }}

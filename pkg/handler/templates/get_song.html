@@ -34,7 +34,7 @@
                     <td>{{.Year}}</td>
                     <td>
                         <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                            <a class="btn btn-outline-primary" href="/api_admin/update_song/{{.ID}}">Edit</a>
+                            <a class="btn btn-outline-primary" href="/api_admin/update_song/{{.ID}}?name={{.Name}}&genre={{.Genre}}&genre2={{.Genre2}}&year={{.Year}}">Edit</a>
                             <a class="btn btn-outline-danger" href="#" onclick="deleteSong('{{.ID}}')">Delete</a>
                         </div>
                     </td>

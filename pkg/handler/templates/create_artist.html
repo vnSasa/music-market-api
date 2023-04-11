@@ -19,6 +19,16 @@
                         <input type="submit" value="Add Artist" class="btn btn-outline-success">
                     </form>
             </div> 
+                {{ if .BadData }}
+                    <div class="alert alert-danger" role="alert">
+                    Incorrect data was entered to create an artist!
+                    </div>
+                {{ end }}
+                {{ if .ReplayData }}
+                    <div class="alert alert-danger" role="alert">
+                    The artist is already exists!
+                    </div>
+                {{ end }}
         </main>
 
 {{ template "footer" }}

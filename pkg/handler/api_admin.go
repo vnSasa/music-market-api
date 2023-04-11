@@ -23,13 +23,17 @@ func (h *Handler) createArtist(c *gin.Context) {
 func (h *Handler) saveArtist(c *gin.Context) {
 	var input model.ArtistList
 	if err := c.ShouldBind(&input); err != nil {
-		c.Redirect(http.StatusBadRequest, "/api_admin/main_page")
+		c.HTML(http.StatusOK, "create_artist.html", gin.H{
+			"BadData": true,
+		})
 
 		return
 	}
 	err := h.services.Artists.CreateArtist(input)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		c.HTML(http.StatusOK, "create_artist.html", gin.H{
+			"ReplayData": true,
+		})
 
 		return
 	}
@@ -37,8 +41,6 @@ func (h *Handler) saveArtist(c *gin.Context) {
 }
 
 func (h *Handler) getAllArtist(c *gin.Context) {
-	isAdmin := true
-
 	artists, err := h.services.Artists.GetAllArtists()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -47,7 +49,7 @@ func (h *Handler) getAllArtist(c *gin.Context) {
 	}
 	c.HTML(http.StatusOK, "get_artist.html", gin.H{
 		"Artists": artists,
-		"IsAdmin": isAdmin,
+		"IsAdmin": true,
 	})
 }
 
@@ -127,18 +129,25 @@ func (h *Handler) createSong(c *gin.Context) {
 
 func (h *Handler) saveSong(c *gin.Context) {
 	var input model.SongList
+	artists, _ := h.services.Artists.GetAllArtists()
 	if err := c.ShouldBind(&input); err != nil {
-		c.Redirect(http.StatusBadRequest, "main_page.html")
+		c.HTML(http.StatusOK, "create_song.html", gin.H{
+			"BadData": true,
+			"Artists": artists,
+		})
 
 		return
 	}
 	err := h.services.Songs.CreateSong(input)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		c.HTML(http.StatusOK, "create_song.html", gin.H{
+			"ReplayData": true,
+			"Artists": artists,
+		})
 
 		return
 	}
-	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
+	c.Redirect(http.StatusSeeOther, "/api_admin/song")
 }
 
 func (h *Handler) updateSong(c *gin.Context) {
@@ -163,9 +172,14 @@ func (h *Handler) saveChangesSong(c *gin.Context) {
 
 		return
 	}
+	artists, _ := h.services.Artists.GetAllArtists()
 	var input model.SongList
 	if err := c.ShouldBind(&input); err != nil {
-		c.Redirect(http.StatusBadRequest, "main_page.html")
+		c.HTML(http.StatusOK, "update_song.html", gin.H{
+			"BadData": true,
+			"Artists": artists,
+			"id":      id,
+		})
 
 		return
 	}
@@ -175,12 +189,13 @@ func (h *Handler) saveChangesSong(c *gin.Context) {
 
 		return
 	}
-	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
+	c.HTML(http.StatusOK, "update_song.html", gin.H{
+		"Artists": artists,
+		"id":      id,
+	})
 }
 
 func (h *Handler) getAllSong(c *gin.Context) {
-	isAdmin := true
-
 	var songList []model.SongData
 	songs, err := h.services.Songs.GetAllSongs()
 	if err != nil {
@@ -211,7 +226,7 @@ func (h *Handler) getAllSong(c *gin.Context) {
 	}
 	c.HTML(http.StatusOK, "get_song.html", gin.H{
 		"Songs":   songList,
-		"IsAdmin": isAdmin,
+		"IsAdmin": true,
 	})
 }
 

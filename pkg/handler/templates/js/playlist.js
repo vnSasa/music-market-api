@@ -1,20 +1,39 @@
 function addToPlaylist(id) {
-    if (confirm('Are you sure you want to add this song to playlist?')) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to add this song to your playlist?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, add it!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
         fetch(`/api_user/add_to_playlist/${id}`, {
-            method: 'POST'
+          method: 'POST'
         })
         .then(response => {
-            if (response.ok) {
-                confirm('The song has been added to your playlist')
-                window.location.href = '/api_user/user_playlist';
-            } else {
-                confirm('You are trying to add a song that you have previously added')
-                window.location.href = '/api_user/user_playlist';
-            }
+          if (response.ok) {
+            Swal.fire(
+              'Success!',
+              'The song has been added to your playlist.',
+              'success'
+            ).then(() => {
+              window.location.href = '/api_user/get_song';
+            });
+          } else {
+            Swal.fire(
+              'Error!',
+              'You are trying to add a song that you have previously added.',
+              'error'
+            ).then(() => {
+              window.location.href = '/api_user/get_song';
+            });
+          }
         })
-        .catch(error => console.log('Error delete:', error));
-    }
-}
+        .catch(error => console.log('Error:', error));
+      }
+    });
+  }
 
 function deleteSongFromPlaylist(id) {
     if (confirm('Are you sure you want to delete this song?')) {
