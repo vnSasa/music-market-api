@@ -1,5 +1,5 @@
-function updateData() {
-    const formUpdate = document.getElementById('update-form');
+
+const formUpdate = document.getElementById('update-form');
     formUpdate.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(formUpdate);
@@ -7,5 +7,9 @@ function updateData() {
             method: 'PUT',
             body: formData
         });
+        if (response.ok) {
+            window.location.href = '/';
+        } else {
+            console.log('Error update:', error);
+        }
     });
-}

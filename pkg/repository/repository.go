@@ -8,7 +8,10 @@ import (
 
 type Authorization interface {
 	CreateUser(user model.User) error
-	GetUser(login, password string) (int, error)
+	GetUserID(login, password string) (int, error)
+	GetUserByID(id int) (*model.User, error)
+	UpdateUserWithPassword(userID int, input model.User) error
+	UpdateUserWithoutPassword(userID int, input model.User) error
 }
 
 type Artists interface {

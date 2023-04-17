@@ -1,0 +1,32 @@
+{{ template "header_user" }}
+
+<main class="px-3">
+    <h1>User Information</h1>
+
+    <form action="/api_user/update_data" id="update-form" class="lead" method="POST">
+        <div class="col-12">
+            <label class="col-6" for="login">Login</label>
+            <input type="text" name="login" class="col-sm-6 rounded-3" placeholder="login" value="{{.UserData.Login}}">
+        </div>
+        <div class="col-12">
+            <label class="col-6" for="first_name">First Name</label>
+            <input type="text" name="first_name" class="col-sm-6 rounded-3" placeholder="first_name" value="{{.UserData.FirstName}}">
+        </div>
+        <div class="col-12">
+            <label class="col-6" for="last_name">Last Name</label>
+            <input type="text" name="last_name" class="col-sm-6 rounded-3"placeholder="last_name" value="{{.UserData.LastName}}">
+        </div>
+        <div class="col-12">
+            <label class="col-6" for="password">Password</label>
+            <input type="text" name="password" class="col-sm-6 rounded-3" placeholder="password">
+        </div>
+        <br>
+        <div class="col-12">
+            <button type="submit" class="btn btn-outline-success">OK</button>
+        </div>
+        <br>
+    </form>
+</main>
+<script src="/js/update_user.js"></script>
+
+{{ template "footer" }}

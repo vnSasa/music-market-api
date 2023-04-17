@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/spf13/viper"
 	"net/http"
 	"strconv"
 
@@ -12,6 +13,29 @@ func (h *Handler) mainPageAdmin(c *gin.Context) {
 	c.HTML(http.StatusOK, "main_page.html", gin.H{
 		"IsAdmin": true,
 	})
+}
+
+func (h *Handler) signUpAdmin(c *gin.Context) {
+	c.HTML(http.StatusOK, "sign-up_admin.html", nil)
+}
+
+func (h *Handler) addNewAdmin(c *gin.Context) {
+	input := model.User{
+		Status: viper.GetString("admin.Status"),
+	}
+
+	if err := c.ShouldBind(&input); err != nil {
+		c.HTML(http.StatusBadRequest, "sign-up_admin.html", "invalid input body")
+
+		return
+	}
+	err := h.services.Authorization.CreateUser(input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 }
 
 // API FOR ARTISTS

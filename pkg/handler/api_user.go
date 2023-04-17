@@ -13,6 +13,45 @@ func (h *Handler) mainPageUser(c *gin.Context) {
 	c.HTML(http.StatusOK, "main_page.html", nil)
 }
 
+func (h *Handler) userData(c *gin.Context) {
+	userID, err := h.getUserID(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	userData, err := h.services.Authorization.GetUserByID(userID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "user_data.html", gin.H{
+		"UserData": userData,
+	})
+}
+
+func (h *Handler) updateUser(c *gin.Context) {
+	userID, err := h.getUserID(c)
+	if err != nil {
+		c.Redirect(http.StatusBadRequest, "/api_user/user_data")
+
+		return
+	}
+	var input model.User
+	if err := c.ShouldBind(&input); err != nil {
+		c.Redirect(http.StatusBadRequest, "/api_user/user_data")
+
+		return
+	}
+	err = h.services.Authorization.UpdateUser(userID, input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+}
+
 func (h *Handler) getSongs(c *gin.Context) {
 	var songList []model.SongData
 	songs, err := h.services.Songs.GetAllSongs()

@@ -10,3 +10,4 @@ db:
 admin:
   Login:  "Admin"
   Password: "Password"
+  Status: "admin"

@@ -7,7 +7,9 @@ import (
 
 type Authorization interface {
 	CreateUser(user model.User) error
-	GenerateToken(login, password string) (*model.TokenDetails, error)
+	GetUserByID(id int) (*model.User, error)
+	UpdateUser(userID int, input model.User) error
+	GenerateToken(login, password string) (*model.TokenDetails, string, error)
 	ParseToken(accessToken string) (*model.AccessTokenClaims, error)
 	RefreshToken(refreshToken string) (string, error)
 }

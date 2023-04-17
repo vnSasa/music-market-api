@@ -4,11 +4,9 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/spf13/viper"
 	"github.com/vnSasa/music-market-api/model"
 	"github.com/vnSasa/music-market-api/pkg/repository"
 )
@@ -34,15 +32,30 @@ func (s *AuthService) CreateUser(user model.User) error {
 	return s.repo.CreateUser(user)
 }
 
-func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails, error) {
-	id, err := s.repo.GetUser(login, generatePasswordHash(password))
-	if err != nil {
-		return nil, err
+func (s *AuthService) GetUserByID(id int) (*model.User, error) {
+	return s.repo.GetUserByID(id)
+}
+
+func (s *AuthService) UpdateUser(userID int, input model.User) error {
+	if input.Password != "" {
+		input.Password = generatePasswordHash(input.Password)
+
+		return s.repo.UpdateUserWithPassword(userID, input)
+	} else {
+		return s.repo.UpdateUserWithoutPassword(userID, input)
 	}
 
-	isAdmin := true
-	if strings.Compare(login, viper.GetString("admin.Login")) != 0 {
-		isAdmin = false
+}
+
+func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails, string, error) {
+	id, err := s.repo.GetUserID(login, generatePasswordHash(password))
+	if err != nil {
+		return nil, "", err
+	}
+
+	user, err := s.repo.GetUserByID(id)
+	if err != nil {
+		return nil, "", err
 	}
 
 	td := &model.TokenDetails{}
@@ -55,7 +68,7 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 			ExpiresAt: td.AtExpires,
 		},
 		UserID:  id,
-		IsAdmin: isAdmin,
+		Status: user.Status,
 	})
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &model.RefreshTokenClaims{
@@ -63,21 +76,21 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 			ExpiresAt: td.RtExpires,
 		},
 		UserID:    id,
-		IsAdmin:   isAdmin,
+		Status: user.Status,
 		IsRefresh: true,
 	})
 
 	td.AccessToken, err = accessToken.SignedString([]byte(signingKey))
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	td.RefreshToken, err = refreshToken.SignedString([]byte(signingKey))
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
-	return td, nil
+	return td, user.Status, nil
 }
 
 func (s *AuthService) ParseToken(accessToken string) (*model.AccessTokenClaims, error) {
@@ -127,7 +140,7 @@ func (s *AuthService) RefreshToken(refreshToken string) (string, error) {
 			ExpiresAt: atExpires,
 		},
 		UserID:  claims.UserID,
-		IsAdmin: claims.IsAdmin,
+		Status: claims.Status,
 	})
 
 	accessTokenValue, err := accessToken.SignedString([]byte(signingKey))
