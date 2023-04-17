@@ -28,7 +28,7 @@ func (h *Handler) InitRoute() *gin.Engine {
 		auth.GET("/sign-up", h.signUp)
 		auth.POST("/new-sign-up", h.newSignUp)
 		auth.POST("/sign-in", h.signIn)
-		auth.POST("/logout", h.logout)
+		auth.GET("/logout", h.logout)
 	}
 
 	auth.Use(saveAccessToken)
@@ -36,6 +36,9 @@ func (h *Handler) InitRoute() *gin.Engine {
 	admin := router.Group("/api_admin", h.adminIdentity)
 	{
 		admin.GET("/main_page", h.mainPageAdmin)
+
+		admin.GET("/sign-up_admin", h.signUpAdmin)
+		admin.POST("/add_new_admin", h.addNewAdmin)
 
 		admin.GET("/create_artist", h.createArtist)
 		admin.POST("/save_artist", h.saveArtist)
@@ -56,6 +59,9 @@ func (h *Handler) InitRoute() *gin.Engine {
 	user := router.Group("/api_user", h.userIdentity)
 	{
 		user.GET("/main_page", h.mainPageUser)
+
+		user.GET("/user_data", h.userData)
+		user.PUT("/update_data", h.updateUser)
 
 		user.GET("/get_song", h.getSongs)
 		user.GET("/get_artist", h.getArtist)

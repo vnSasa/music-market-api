@@ -21,6 +21,7 @@ func (h *Handler) initAdmin() {
 	input := model.User{
 		Login:    viper.GetString("admin.Login"),
 		Password: viper.GetString("admin.Password"),
+		Status:	viper.GetString("admin.Status"),
 	}
 	h.services.Authorization.CreateUser(input)
 }
@@ -52,7 +53,7 @@ func (h *Handler) signIn(c *gin.Context) {
 
 		return
 	}
-	token, err := h.services.Authorization.GenerateToken(input.Login, input.Password)
+	token, status, err := h.services.Authorization.GenerateToken(input.Login, input.Password)
 	if err != nil {
 		c.HTML(http.StatusBadRequest, "sign-up.html", errors.New("user not valid"))
 
@@ -73,7 +74,7 @@ func (h *Handler) signIn(c *gin.Context) {
 		HttpOnly: true,
 	})
 
-	if strings.Compare(input.Login, viper.GetString("admin.Login")) == 0 {
+	if strings.Compare(status, viper.GetString("admin.Status")) == 0 {
 		c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 	} else {
 		c.Redirect(http.StatusSeeOther, "/api_user/main_page")

@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"github.com/spf13/viper"
+	"strings"
 	"errors"
 	"net/http"
 
@@ -52,7 +54,7 @@ func (h *Handler) adminIdentity(c *gin.Context) {
 
 		return
 	}
-	if !accessToken.IsAdmin {
+	if strings.Compare(accessToken.Status, viper.GetString("admin.Status")) != 0 {
 		newErrorResponse(c, http.StatusInternalServerError, "only admin have access")
 
 		return
@@ -72,7 +74,7 @@ func (h *Handler) userIdentity(c *gin.Context) {
 
 		return
 	}
-	if accessToken.IsAdmin {
+	if strings.Compare(accessToken.Status, viper.GetString("admin.Status")) == 0 {
 		newErrorResponse(c, http.StatusInternalServerError, "only user have access")
 
 		return

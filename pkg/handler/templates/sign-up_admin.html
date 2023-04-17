@@ -1,0 +1,19 @@
+{{ template "header_admin" }}
+
+        <main class="px-3">
+            <h1>Add New Admin</h1>
+
+            <form action="/api_admin/add_new_admin" class="lead" method="post">
+                <div class="col-12">
+                    <input type="text" name="login" class="col-sm-6 rounded-3" placeholder="login">
+                </div>
+                <div class="col-12">
+                    <input type="text" name="password" class="col-sm-6 rounded-3" placeholder="password">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-outline-success">Add</button>
+                </div>
+            </form>
+        </main>
+
+        {{ template "footer" }}
