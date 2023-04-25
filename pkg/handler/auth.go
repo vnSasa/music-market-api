@@ -21,7 +21,7 @@ func (h *Handler) initAdmin() {
 	input := model.User{
 		Login:    viper.GetString("admin.Login"),
 		Password: viper.GetString("admin.Password"),
-		Status:	viper.GetString("admin.Status"),
+		Status:   viper.GetString("admin.Status"),
 	}
 	h.services.Authorization.CreateUser(input)
 }

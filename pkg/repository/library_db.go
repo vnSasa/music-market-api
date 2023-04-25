@@ -18,7 +18,7 @@ func NewLibraryDB(db *sql.DB) *LibraryDB {
 
 func (r *LibraryDB) GetUserPlaylist(id int) ([]model.SongList, error) {
 	var songs []model.SongList
-	query := fmt.Sprintf("SELECT s.id, s.artist_id, s.name_song, s.genre, s.second_genre, s.year_of_release "+
+	query := fmt.Sprintf("SELECT s.id, s.artist_id, s.name_song, s.genre, s.second_genre, s.year_of_release, s.rating "+
 		"FROM %s s JOIN %s ul ON s.id = ul.song_id WHERE ul.user_id = ?", songTable, libraryTable)
 
 	rows, err := r.db.Query(query, id)
@@ -29,7 +29,7 @@ func (r *LibraryDB) GetUserPlaylist(id int) ([]model.SongList, error) {
 
 	for rows.Next() {
 		var song model.SongList
-		err = rows.Scan(&song.ID, &song.ArtistID, &song.Name, &song.Genre, &song.Genre2, &song.Year)
+		err = rows.Scan(&song.ID, &song.ArtistID, &song.Name, &song.Genre, &song.Genre2, &song.Year, &song.Rating)
 		if err != nil {
 			return nil, err
 		}
@@ -49,14 +49,28 @@ func (r *LibraryDB) AddToPlaylist(userID, songID int) error {
 	}
 	defer tx.Rollback()
 
-	var count int
-	err = r.db.QueryRow("SELECT COUNT(*) FROM "+libraryTable+" WHERE user_id = ? AND song_id = ?", userID, songID).Scan(&count)
+	var userIDs []int
+	rows, err := r.db.Query("SELECT user_id FROM "+libraryTable+" WHERE song_id = ?", songID)
 	if err != nil {
 		return err
 	}
+	defer rows.Close()
+	for rows.Next() {
+		var uid int
+		err := rows.Scan(&uid)
+		if err != nil {
+			return err
+		}
+		userIDs = append(userIDs, uid)
+	}
+	if err := rows.Err(); err != nil {
+		return err
+	}
 
-	if count > 0 {
-		return errors.New("song already in playlist")
+	for _, uid := range userIDs {
+		if uid == userID {
+			return errors.New("song already in playlist for user")
+		}
 	}
 
 	query := fmt.Sprintf("INSERT INTO %s (user_id, song_id) VALUES (?, ?)", libraryTable)

@@ -17,6 +17,7 @@ type Authorization interface {
 type Artists interface {
 	CreateArtist(artist model.ArtistList) error
 	GetAllArtists() ([]model.ArtistList, error)
+	GetArtistByID(artistID int) (*model.ArtistList, error)
 	UpdateArtist(id int, artist model.ArtistList) error
 	DeleteArtist(id int) error
 }
@@ -24,7 +25,9 @@ type Artists interface {
 type Songs interface {
 	CreateSong(song model.SongList) error
 	GetAllSongs() ([]model.SongList, error)
+	GetSongByID(songID int) (*model.SongList, error)
 	UpdateSong(id int, song model.SongList) error
+	AddRating(songID, ratingPlus int) error
 	DeleteSong(id int) error
 	GetPlaylist(id int) ([]model.SongList, error)
 }
@@ -35,11 +38,14 @@ type UsersLibrary interface {
 	DeleteSongFromPlaylist(songID int) error
 }
 
+type UsersTop interface{}
+
 type Service struct {
 	Authorization
 	Artists
 	Songs
 	UsersLibrary
+	UsersTop
 }
 
 func NewService(repos *repository.Repository) *Service {

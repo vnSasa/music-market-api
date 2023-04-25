@@ -63,6 +63,18 @@ func (r *ArtistDB) GetAllArtists() ([]model.ArtistList, error) {
 	return artists, nil
 }
 
+func (r *ArtistDB) GetArtistByID(artistID int) (*model.ArtistList, error) {
+	var artistData model.ArtistList
+	confirmArtist := fmt.Sprintf("SELECT name_artist, date_of_birth, about_artist FROM %s WHERE id = ?", artistTable)
+	row := r.db.QueryRow(confirmArtist, artistID)
+	err := row.Scan(&artistData.Name, &artistData.Birth, &artistData.About)
+	if err != nil {
+		return nil, errors.New("artist not found")
+	}
+
+	return &artistData, nil
+}
+
 func (r *ArtistDB) UpdateArtist(id int, artist model.ArtistList) error {
 	query := fmt.Sprintf("UPDATE %s SET name_artist=?, date_of_birth=?, about_artist=? WHERE id=?", artistTable)
 

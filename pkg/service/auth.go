@@ -44,7 +44,6 @@ func (s *AuthService) UpdateUser(userID int, input model.User) error {
 	} else {
 		return s.repo.UpdateUserWithoutPassword(userID, input)
 	}
-
 }
 
 func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails, string, error) {
@@ -67,7 +66,7 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: td.AtExpires,
 		},
-		UserID:  id,
+		UserID: id,
 		Status: user.Status,
 	})
 
@@ -76,7 +75,7 @@ func (s *AuthService) GenerateToken(login, password string) (*model.TokenDetails
 			ExpiresAt: td.RtExpires,
 		},
 		UserID:    id,
-		Status: user.Status,
+		Status:    user.Status,
 		IsRefresh: true,
 	})
 
@@ -139,7 +138,7 @@ func (s *AuthService) RefreshToken(refreshToken string) (string, error) {
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: atExpires,
 		},
-		UserID:  claims.UserID,
+		UserID: claims.UserID,
 		Status: claims.Status,
 	})
 

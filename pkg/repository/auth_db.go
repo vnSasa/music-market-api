@@ -56,13 +56,13 @@ func (r *AuthDB) GetUserID(login, password string) (int, error) {
 func (r *AuthDB) GetUserByID(id int) (*model.User, error) {
 	var user model.User
 	confirmUser := fmt.Sprintf("SELECT login, first_name, last_name, password, status FROM %s WHERE id = ?", userTable)
-    row := r.db.QueryRow(confirmUser, id)
-    err := row.Scan(&user.Login, &user.FirstName, &user.LastName, &user.Password, &user.Status)
-    if err != nil {
-        return nil, errors.New("user not found")
-    }
-    
-    return &user, nil
+	row := r.db.QueryRow(confirmUser, id)
+	err := row.Scan(&user.Login, &user.FirstName, &user.LastName, &user.Password, &user.Status)
+	if err != nil {
+		return nil, errors.New("user not found")
+	}
+
+	return &user, nil
 }
 
 func (r *AuthDB) UpdateUserWithPassword(userID int, input model.User) error {

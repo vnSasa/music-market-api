@@ -14,9 +14,16 @@ type SongList struct {
 	Genre    string `json:"genre" db:"genre" form:"genre" binding:"required"`
 	Genre2   string `json:"second_genre" db:"second_genre" form:"second_genre"`
 	Year     int    `json:"year_of_release" db:"year_of_release" form:"year_of_release" binding:"required"`
+	Rating   int    `json:"rating" db:"rating" form:"rating"`
 }
 
 type Library struct {
+	ID     int
+	UserID int
+	SongID int
+}
+
+type TopLibrary struct {
 	ID     int
 	UserID int
 	SongID int
@@ -30,4 +37,5 @@ type SongData struct {
 	Genre      string
 	Genre2     string
 	Year       int
+	Rating     int
 }

@@ -23,14 +23,14 @@
             <tbody>
                 {{ if .IsAdmin }}
                 {{range .Artists}}
-                <tr class="artistRow">
+                <tr>
                     <td>{{.ID}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Birth}}</td>
                     <td>{{.About}}</td>
                     <td>
                         <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                            <a class="btn btn-outline-primary" href="/api_admin/update_artist/{{.ID}}?name={{.Name}}&birth={{.Birth}}&about={{.About}}">Edit</a>
+                            <a class="btn btn-outline-primary" href="/api_admin/update_artist/{{.ID}}">Edit</a>
                             <a class="btn btn-outline-danger" href="#" onclick="deleteArtist('{{.ID}}')">Delete</a>
                             <a class="btn btn-outline-info" href="/api_admin/playlist/{{.ID}}">Playlist</a>
                         </div>
@@ -39,7 +39,7 @@
                 {{end}}
                 {{ else }}
                 {{range .Artists}}
-                <tr class="artistRow">
+                <tr>
                     <td>{{.ID}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Birth}}</td>
