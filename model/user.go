@@ -6,7 +6,7 @@ type User struct {
 	FirstName string `json:"first_name" form:"first_name"`
 	LastName  string `json:"last_name" form:"last_name"`
 	Password  string `json:"password" form:"password"`
-	Status	string	`json:"status" form:"status"`
+	Status    string `json:"status" form:"status"`
 }
 
 type SignInData struct {

@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/spf13/viper"
-	"strings"
 	"errors"
 	"net/http"
+	"strings"
+
+	"github.com/spf13/viper"
 
 	"github.com/gin-gonic/gin"
 )

@@ -21,8 +21,16 @@ func (s *SongService) GetAllSongs() ([]model.SongList, error) {
 	return s.repo.GetAllSongs()
 }
 
+func (s *SongService) GetSongByID(songID int) (*model.SongList, error) {
+	return s.repo.GetSongByID(songID)
+}
+
 func (s *SongService) UpdateSong(id int, song model.SongList) error {
 	return s.repo.UpdateSong(id, song)
+}
+
+func (s *SongService) AddRating(songID, ratingPlus int) error {
+	return s.repo.AddRating(songID, ratingPlus)
 }
 
 func (s *SongService) DeleteSong(id int) error {

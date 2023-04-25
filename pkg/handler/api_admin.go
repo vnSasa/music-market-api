@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"github.com/spf13/viper"
 	"net/http"
 	"strconv"
+
+	"github.com/spf13/viper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/vnSasa/music-market-api/model"
@@ -78,10 +79,17 @@ func (h *Handler) getAllArtist(c *gin.Context) {
 }
 
 func (h *Handler) updateArtist(c *gin.Context) {
-	id := c.Param("id")
+	artistID, _ := strconv.Atoi(c.Param("id"))
 
+	artistData, err := h.services.Artists.GetArtistByID(artistID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
 	c.HTML(http.StatusOK, "update_artist.html", gin.H{
-		"id": id,
+		"ArtistData": artistData,
+		"ArtistID":   artistID,
 	})
 }
 
@@ -166,7 +174,7 @@ func (h *Handler) saveSong(c *gin.Context) {
 	if err != nil {
 		c.HTML(http.StatusOK, "create_song.html", gin.H{
 			"ReplayData": true,
-			"Artists": artists,
+			"Artists":    artists,
 		})
 
 		return
@@ -175,8 +183,20 @@ func (h *Handler) saveSong(c *gin.Context) {
 }
 
 func (h *Handler) updateSong(c *gin.Context) {
-	id := c.Param("id")
+	songID, _ := strconv.Atoi(c.Param("id"))
 
+	songData, err := h.services.Songs.GetSongByID(songID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	artistData, err := h.services.Artists.GetArtistByID(songData.ArtistID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
 	artists, err := h.services.Artists.GetAllArtists()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -184,8 +204,10 @@ func (h *Handler) updateSong(c *gin.Context) {
 		return
 	}
 	c.HTML(http.StatusOK, "update_song.html", gin.H{
-		"id":      id,
-		"Artists": artists,
+		"SongData":   songData,
+		"ArtistData": artistData,
+		"Artists":    artists,
+		"SongID":     songID,
 	})
 }
 
@@ -213,10 +235,6 @@ func (h *Handler) saveChangesSong(c *gin.Context) {
 
 		return
 	}
-	c.HTML(http.StatusOK, "update_song.html", gin.H{
-		"Artists": artists,
-		"id":      id,
-	})
 }
 
 func (h *Handler) getAllSong(c *gin.Context) {
@@ -246,6 +264,7 @@ func (h *Handler) getAllSong(c *gin.Context) {
 			Genre:      song.Genre,
 			Genre2:     song.Genre2,
 			Year:       song.Year,
+			Rating:     song.Rating,
 		})
 	}
 	c.HTML(http.StatusOK, "get_song.html", gin.H{

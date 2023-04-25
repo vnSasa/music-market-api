@@ -33,10 +33,11 @@ func (r *SongDB) CreateSong(song model.SongList) error {
 		return errors.New("Song already exists")
 	}
 
-	query := fmt.Sprintf("INSERT INTO %s (artist_id, name_song, genre, second_genre, year_of_release)"+
-		"VALUES (?, ?, ?, ?, ?)", songTable)
+	startRate := 0
+	query := fmt.Sprintf("INSERT INTO %s (artist_id, name_song, genre, second_genre, year_of_release, rating)"+
+		"VALUES (?, ?, ?, ?, ?, ?)", songTable)
 
-	_, err = r.db.Exec(query, song.ArtistID, song.Name, song.Genre, song.Genre2, song.Year)
+	_, err = r.db.Exec(query, song.ArtistID, song.Name, song.Genre, song.Genre2, song.Year, startRate)
 	if err != nil {
 		return errors.New(err.Error())
 	}
@@ -50,7 +51,7 @@ func (r *SongDB) CreateSong(song model.SongList) error {
 
 func (r *SongDB) GetAllSongs() ([]model.SongList, error) {
 	var songs []model.SongList
-	query := fmt.Sprintf("SELECT id, artist_id, name_song, genre, second_genre, year_of_release FROM %s", songTable)
+	query := fmt.Sprintf("SELECT id, artist_id, name_song, genre, second_genre, year_of_release, rating FROM %s", songTable)
 
 	rows, err := r.db.Query(query)
 	if err != nil {
@@ -60,7 +61,7 @@ func (r *SongDB) GetAllSongs() ([]model.SongList, error) {
 
 	for rows.Next() {
 		var song model.SongList
-		err = rows.Scan(&song.ID, &song.ArtistID, &song.Name, &song.Genre, &song.Genre2, &song.Year)
+		err = rows.Scan(&song.ID, &song.ArtistID, &song.Name, &song.Genre, &song.Genre2, &song.Year, &song.Rating)
 		if err != nil {
 			return nil, err
 		}
@@ -73,11 +74,51 @@ func (r *SongDB) GetAllSongs() ([]model.SongList, error) {
 	return songs, nil
 }
 
+func (r *SongDB) GetSongByID(songID int) (*model.SongList, error) {
+	var songData model.SongList
+	confirmSong := fmt.Sprintf("SELECT artist_id, name_song, genre, second_genre, year_of_release, rating FROM %s WHERE id = ?", songTable)
+	row := r.db.QueryRow(confirmSong, songID)
+	err := row.Scan(&songData.ArtistID, &songData.Name, &songData.Genre, &songData.Genre2, &songData.Year, &songData.Rating)
+	if err != nil {
+		return nil, errors.New("song not found")
+	}
+
+	return &songData, nil
+}
+
 func (r *SongDB) UpdateSong(id int, song model.SongList) error {
 	query := fmt.Sprintf("UPDATE %s SET artist_id=?, name_song=?, genre=?, second_genre=?, year_of_release=? WHERE id=?", songTable)
 
 	_, err := r.db.Exec(query, song.ArtistID, song.Name, song.Genre, song.Genre2, song.Year, id)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *SongDB) AddRating(songID, ratingPlus int) error {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var currentRating int
+	err = r.db.QueryRow("SELECT rating FROM "+songTable+" WHERE id=?", songID).Scan(&currentRating)
+	if err != nil {
+		return err
+	}
+
+	newRating := currentRating + ratingPlus
+
+	query := fmt.Sprintf("UPDATE %s SET rating=? WHERE id=?", songTable)
+	_, err = r.db.Exec(query, newRating, songID)
+	if err != nil {
+		return err
+	}
+
+	if err := tx.Commit(); err != nil {
 		return err
 	}
 
@@ -96,7 +137,7 @@ func (r *SongDB) DeleteSong(id int) error {
 
 func (r *SongDB) GetPlaylist(id int) ([]model.SongList, error) {
 	var songs []model.SongList
-	query := fmt.Sprintf("SELECT id, name_song, genre, second_genre, year_of_release FROM %s WHERE artist_id=?", songTable)
+	query := fmt.Sprintf("SELECT id, name_song, genre, second_genre, year_of_release, rating FROM %s WHERE artist_id=?", songTable)
 
 	rows, err := r.db.Query(query, id)
 	if err != nil {
@@ -106,7 +147,7 @@ func (r *SongDB) GetPlaylist(id int) ([]model.SongList, error) {
 
 	for rows.Next() {
 		var song model.SongList
-		err = rows.Scan(&song.ID, &song.Name, &song.Genre, &song.Genre2, &song.Year)
+		err = rows.Scan(&song.ID, &song.Name, &song.Genre, &song.Genre2, &song.Year, &song.Rating)
 		if err != nil {
 			return nil, err
 		}

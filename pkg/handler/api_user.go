@@ -79,6 +79,7 @@ func (h *Handler) getSongs(c *gin.Context) {
 			Genre:      song.Genre,
 			Genre2:     song.Genre2,
 			Year:       song.Year,
+			Rating:     song.Rating,
 		})
 	}
 	c.HTML(http.StatusOK, "get_song.html", gin.H{
@@ -131,6 +132,7 @@ func (h *Handler) getUserPlaylist(c *gin.Context) {
 			Genre:      song.Genre,
 			Genre2:     song.Genre2,
 			Year:       song.Year,
+			Rating:     song.Rating,
 		})
 	}
 	c.HTML(http.StatusOK, "user_playlist.html", gin.H{
@@ -175,7 +177,13 @@ func (h *Handler) addToPlaylist(c *gin.Context) {
 
 		return
 	}
-	c.Redirect(http.StatusSeeOther, "/api_user/user_playlist")
+	ratingPlus := 1
+	err = h.services.Songs.AddRating(songID, ratingPlus)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
 }
 
 func (h *Handler) deleteSongFromPlaylist(c *gin.Context) {
