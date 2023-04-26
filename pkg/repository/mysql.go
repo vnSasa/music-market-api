@@ -12,6 +12,7 @@ const (
 	artistTable  = "artists"
 	songTable    = "songs"
 	libraryTable = "user_library"
+	topTable = "user_top_ten"
 )
 
 type Config struct {

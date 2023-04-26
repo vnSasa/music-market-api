@@ -140,6 +140,47 @@ func (h *Handler) getUserPlaylist(c *gin.Context) {
 	})
 }
 
+func (h *Handler) getUserToplist(c *gin.Context) {
+	userID, err := h.getUserID(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	var songList []model.SongData
+	songs, err := h.services.UsersLibrary.GetUserToplist(userID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	artists, err := h.services.Artists.GetAllArtists()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	artistMap := make(map[int]string)
+	for _, artist := range artists {
+		artistMap[artist.ID] = artist.Name
+	}
+	for _, song := range songs {
+		songList = append(songList, model.SongData{
+			ID:         song.ID,
+			ArtistID:   song.ArtistID,
+			ArtistData: artistMap[song.ArtistID],
+			Name:       song.Name,
+			Genre:      song.Genre,
+			Genre2:     song.Genre2,
+			Year:       song.Year,
+			Rating:     song.Rating,
+		})
+	}
+	c.HTML(http.StatusOK, "user_toplist.html", gin.H{
+		"Songs": songList,
+	})
+}
+
 func (h *Handler) getPlaylistByArtist(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -177,8 +218,34 @@ func (h *Handler) addToPlaylist(c *gin.Context) {
 
 		return
 	}
-	ratingPlus := 1
-	err = h.services.Songs.AddRating(songID, ratingPlus)
+	err = h.services.Songs.UpdateRating(songID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+}
+
+func (h *Handler) addToToplist(c *gin.Context) {
+	userID, err := h.getUserID(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	songID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+
+		return
+	}
+	err = h.services.UsersLibrary.AddToToplist(userID, songID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	err = h.services.Songs.UpdateRating(songID)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 
@@ -187,17 +254,55 @@ func (h *Handler) addToPlaylist(c *gin.Context) {
 }
 
 func (h *Handler) deleteSongFromPlaylist(c *gin.Context) {
+	userID, err := h.getUserID(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
 	songID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 
 		return
 	}
-	err = h.services.UsersLibrary.DeleteSongFromPlaylist(songID)
+	err = h.services.UsersLibrary.DeleteSongFromPlaylist(userID, songID)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 
 		return
 	}
-	c.Redirect(http.StatusSeeOther, "/api_user/user_playlist")
+	err = h.services.Songs.UpdateRating(songID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+}
+
+func (h *Handler) deleteSongFromToplist(c *gin.Context) {
+	userID, err := h.getUserID(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	songID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+
+		return
+	}
+	err = h.services.UsersLibrary.DeleteSongFromToplist(userID, songID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	err = h.services.Songs.UpdateRating(songID)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
 }

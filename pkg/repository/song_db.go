@@ -97,23 +97,26 @@ func (r *SongDB) UpdateSong(id int, song model.SongList) error {
 	return nil
 }
 
-func (r *SongDB) AddRating(songID, ratingPlus int) error {
+func (r *SongDB) UpdateRating(songID int) error {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return err
 	}
 	defer tx.Rollback()
 
-	var currentRating int
-	err = r.db.QueryRow("SELECT rating FROM "+songTable+" WHERE id=?", songID).Scan(&currentRating)
+	var countLibrary int
+	err = r.db.QueryRow("SELECT COUNT(*) FROM "+libraryTable+" WHERE song_id = ?", songID).Scan(&countLibrary)
 	if err != nil {
 		return err
 	}
-
-	newRating := currentRating + ratingPlus
-
+	var countTop int
+	err = r.db.QueryRow("SELECT COUNT(*) FROM "+topTable+" WHERE song_id = ?", songID).Scan(&countTop)
+	if err != nil {
+		return err
+	}
+	count := countLibrary + countTop
 	query := fmt.Sprintf("UPDATE %s SET rating=? WHERE id=?", songTable)
-	_, err = r.db.Exec(query, newRating, songID)
+	_, err = r.db.Exec(query, count, songID)
 	if err != nil {
 		return err
 	}
