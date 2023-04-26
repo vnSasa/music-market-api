@@ -27,25 +27,25 @@ type Songs interface {
 	GetAllSongs() ([]model.SongList, error)
 	GetSongByID(songID int) (*model.SongList, error)
 	UpdateSong(id int, song model.SongList) error
-	AddRating(songID, ratingPlus int) error
+	UpdateRating(songID int) error
 	DeleteSong(id int) error
 	GetPlaylist(id int) ([]model.SongList, error)
 }
 
 type UsersLibrary interface {
 	GetUserPlaylist(id int) ([]model.SongList, error)
+	GetUserToplist(id int) ([]model.SongList, error)
 	AddToPlaylist(userID, songID int) error
-	DeleteSongFromPlaylist(songID int) error
+	AddToToplist(userID, songID int) error
+	DeleteSongFromPlaylist(userID, songID int) error
+	DeleteSongFromToplist(userID, songID int) error
 }
-
-type UsersTop interface{}
 
 type Repository struct {
 	Authorization
 	Artists
 	Songs
 	UsersLibrary
-	UsersTop
 }
 
 func NewRepository(db *sql.DB) *Repository {

@@ -1,6 +1,6 @@
 {{ template "header_user" }}
 
-        <h1>My Playlist</h1>
+        <h1>My Toplist</h1>
 
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Search by name" id="searchInput">
@@ -29,8 +29,7 @@
                     <td>{{.Rating}}</td>
                     <td>
                         <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                            <a class="btn btn-outline-danger" href="#" onclick="deleteSongFromPlaylist('{{.ID}}')">-</a>
-                            <a class="btn btn-outline-primary" href="#" onclick="addToToplist('{{.ID}}')">TOP</a>
+                            <a class="btn btn-outline-danger" href="#" onclick="deleteSongFromToplist('{{.ID}}')">-</a>
                         </div>  
                     </td>
                 </tr>
@@ -39,7 +38,6 @@
         </table>
 
         <script src="/js/search.js"></script>
-        <script src="/js/playlist.js"></script>
         <script src="/js/toplist.js"></script>
 
         {{ template "footer" }}

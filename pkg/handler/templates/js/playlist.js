@@ -30,10 +30,10 @@ function addToPlaylist(id) {
             });
           }
         })
-        .catch(error => console.log('Error:', error));
-      }
-    });
-  }
+      .catch(error => console.log('Error:', error));
+    }
+  });
+}
 
 function deleteSongFromPlaylist(id) {
     if (confirm('Are you sure you want to delete this song?')) {
