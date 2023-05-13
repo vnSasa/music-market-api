@@ -41,11 +41,17 @@ type UsersLibrary interface {
 	DeleteSongFromToplist(userID, songID int) error
 }
 
+type DataFromUser interface {
+	CreateNewData(data model.DataFromUserList) error
+	CreateNewSong(song model.SongFromUserList) error
+}
+
 type Repository struct {
 	Authorization
 	Artists
 	Songs
 	UsersLibrary
+	DataFromUser
 }
 
 func NewRepository(db *sql.DB) *Repository {
@@ -54,5 +60,6 @@ func NewRepository(db *sql.DB) *Repository {
 		Artists:       NewArtistDB(db),
 		Songs:         NewSongDB(db),
 		UsersLibrary:  NewLibraryDB(db),
+		DataFromUser:	NewDataFromUserDB(db),
 	}
 }

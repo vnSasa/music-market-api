@@ -81,7 +81,7 @@ func (r *LibraryDB) AddToPlaylist(userID, songID int) error {
 		return err
 	}
 	defer rows.Close()
-	
+
 	for rows.Next() {
 		var uid int
 		err := rows.Scan(&uid)
@@ -90,7 +90,7 @@ func (r *LibraryDB) AddToPlaylist(userID, songID int) error {
 		}
 		userIDs = append(userIDs, uid)
 	}
-	
+
 	if err := rows.Err(); err != nil {
 		return err
 	}
@@ -128,7 +128,7 @@ func (r *LibraryDB) AddToToplist(userID, songID int) error {
 		return err
 	}
 	defer rows.Close()
-	
+
 	for rows.Next() {
 		var uid int
 		err := rows.Scan(&uid)
@@ -137,7 +137,7 @@ func (r *LibraryDB) AddToToplist(userID, songID int) error {
 		}
 		userIDs = append(userIDs, uid)
 	}
-	
+
 	if err := rows.Err(); err != nil {
 		return err
 	}

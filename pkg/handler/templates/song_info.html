@@ -1,0 +1,60 @@
+{{ template "header_user" }}
+
+<h1>Song Information</h1>
+<table class="table table-dark table-hover">
+    <tbody>
+        <tr>
+            <td>Artist</td>
+            <td>{{.Song.ArtistData}}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{.Song.Name}}</td>
+        </tr>
+        <tr>
+            <td>Genre</td>
+            <td>{{.Song.Genre}}</td>
+        </tr>
+        <tr>
+            <td>Alternative Genre</td>
+            <td>{{.Song.Genre2}}</td>
+        </tr>
+        <tr>
+            <td>Year Of Release</td>
+            <td>{{.Song.Year}}</td>
+        </tr>
+        <tr>
+            <td>Rating</td>
+            <td>{{.Song.Rating}}</td>
+        </tr>
+        {{range .ListenLink}}
+        <tr>
+            <td>Listen Song Here</td>
+            <td>{{.ListenL}}</td>
+        </tr>
+        {{end}}
+        {{range .DownloadLink}}
+        <tr>
+            <td>Download Song Here</td>
+            <td>{{.DownloadL}}</td>
+        </tr>
+        {{end}}
+        <!-- <tr>
+            <td>
+                <audio id="audioPlayer" src="/api_user/song_file/{{.Song.ID}}" ontimeupdate="updateTime()" onloadedmetadata="initializeTime()"></audio>
+                <button onclick="toggleAudio()" class="btn btn-outline-primary">Play/Pause</button>
+                <input type="range" id="seekBar" value="0" oninput="seek()" style="width: 50%">
+                <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+            </td>
+        </tr> -->
+        <tr>
+            <td class="col-6">
+                <a class="btn btn-outline-primary" href="#" onclick="addToPlaylist('{{.Song.ID}}')">Add To My Library</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<script src="/js/playlist.js"></script>
+<!-- <script src="play_song.js"></script> -->
+
+{{ template "footer" }}

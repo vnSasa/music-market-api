@@ -1,0 +1,66 @@
+{{ template "header_user" }}
+
+        <main role="main" class="inner cover">
+            <div class="container">
+                <h1>Create New Data</h1>
+                    <form action="/api_user/save_new_data" class="lead" method="post">
+                        <h2>Artist informations</h2>
+                        <div class="form-group">
+                            <label for="name_artist">name of artist or band</label>
+                            <input type="text" class="form-control" name="name_artist" id="name_artist">
+                        </div>
+                        <div class="form-group">
+                            <label for="date_of_birth">date of birth or establishment</label>
+                            <input type="text" class="form-control" name="date_of_birth" id="date_of_birth">
+                        </div>
+                        <div class="form-group">
+                            <label for="about_artist">about artist or band</label>
+                            <textarea class="form-control" name="about_artist" id="about_artist" rows="5"></textarea>
+                        </div>
+                        <h2>Song infomations</h2>
+                        <div class="form-group">
+                            <label for="name_song">name of song</label>
+                            <input type="text" class="form-control" name="name_song" id="name_song">
+                        </div>
+                        <div class="form-group">
+                            <label for="genre">genre</label>
+                            <select name="genre" class="form-control" id="genre" aria-label="Default select example">
+                                <option selected></option>
+                                <option value="rock">rock</option>
+                                <option value="pop">pop</option>
+                                <option value="hip-hop">hip-hop</option>
+                                <option value="jazz">jazz</option>
+                                <option value="classical">classical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="second_genre">alternative genre</label>
+                            <select name="second_genre" class="form-control" id="second_genre" aria-label="Default select example">
+                                <option selected></option>
+                                <option value="rock">rock</option>
+                                <option value="pop">pop</option>
+                                <option value="hip-hop">hip-hop</option>
+                                <option value="jazz">jazz</option>
+                                <option value="classical">classical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="year_of_release">year of release</label>
+                            <input type="text" class="form-control" name="year_of_release" id="year_of_release">
+                        </div>
+                        <input type="submit" value="Add Data" class="btn btn-outline-success">
+                    </form>
+            </div> 
+                {{ if .BadData }}
+                    <div class="alert alert-danger" role="alert">
+                    Incorrect data was entered to create an artist!
+                    </div>
+                {{ end }}
+                {{ if .ReplayData }}
+                    <div class="alert alert-danger" role="alert">
+                    The artist is already exists!
+                    </div>
+                {{ end }}
+        </main>
+
+{{ template "footer" }}
