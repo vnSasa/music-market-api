@@ -16,6 +16,10 @@
                     <a href="/api_admin/create_song" class="btn btn-outline-success" role="button" data-bs-toggle="button">Create Song</a>
                     <a href="/api_admin/song" class="btn btn-outline-info" role="button" data-bs-toggle="button">Get Song`s list</a>
                 </div>
+                <br>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <a href="/api_admin/data_from_users" class="btn btn-outline-warning" role="button" data-bs-toggle="button">Data From Users</a>
+                </div>
                 {{ else }}
                 <div class="d-grid gap-2 col-6 mx-auto">
                     <a href="/api_user/get_artist" class="btn btn-outline-info" role="button" data-bs-toggle="button">Artists</a>
@@ -24,6 +28,11 @@
                 <br>
                 <div class="d-grid gap-4 col-6 mx-auto">
                     <a href="/api_user/user_playlist" class="btn btn-outline-success" role="button" data-bs-toggle="button">My Playlist</a>
+                </div>
+                <br>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <a href="/api_user/create_new_data" class="btn btn-outline-warning" role="button" data-bs-toggle="button">Create New Data</a>
+                    <a href="/api_user/create_new_song" class="btn btn-outline-warning" role="button" data-bs-toggle="button">Create New Song</a>
                 </div>
                 {{ end }}
             </div>

@@ -51,7 +51,7 @@ func (r *SongDB) CreateSong(song model.SongList) error {
 
 func (r *SongDB) GetAllSongs() ([]model.SongList, error) {
 	var songs []model.SongList
-	query := fmt.Sprintf("SELECT id, artist_id, name_song, genre, second_genre, year_of_release, rating FROM %s", songTable)
+	query := fmt.Sprintf("SELECT id, artist_id, name_song, genre, second_genre, year_of_release, rating FROM %s ORDER BY rating DESC", songTable)
 
 	rows, err := r.db.Query(query)
 	if err != nil {

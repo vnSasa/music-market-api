@@ -42,7 +42,7 @@
                 {{end}}
                 {{ else }}
                 {{range .Songs}}
-                <tr>
+                <tr onclick="redirectToSong('{{.ID}}')">
                     <td>{{.ArtistData}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Genre}}</td>
@@ -63,6 +63,11 @@
         <script src="/js/search.js"></script>
         <script src="/js/delete.js"></script>
         <script src="/js/playlist.js"></script>
+        <script>
+            function redirectToSong(songId) {
+                window.location.href = "/api_user/song_info/" + songId;
+            }
+        </script>
 
         {{ template "footer" }}
 

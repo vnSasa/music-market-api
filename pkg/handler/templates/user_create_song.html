@@ -1,0 +1,63 @@
+{{ template "header_user" }}
+
+        <main role="main" class="inner cover">
+            <div class="container">
+                <h1>Create New Song</h1>
+                <form action="/api_user/save_new_song" class="lead" method="post">
+                    <div class="form-group">
+                        <label for="artist_id">id of artist</label>
+                        <select name="artist_id" class="form-control" id="artist_id">
+                            <option selected></option>
+                            {{range .Artists}}
+                            <option value="{{.ID}}">{{.Name}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="name_song">name of song</label>
+                        <input type="text" class="form-control" name="name_song" id="name_song">
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">genre</label>
+                        <select name="genre" class="form-control" id="genre" aria-label="Default select example">
+                            <option selected></option>
+                            <option value="rock">rock</option>
+                            <option value="pop">pop</option>
+                            <option value="hip-hop">hip-hop</option>
+                            <option value="jazz">jazz</option>
+                            <option value="classical">classical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="second_genre">alternative genre</label>
+                        <select name="second_genre" class="form-control" id="second_genre" aria-label="Default select example">
+                            <option selected></option>
+                            <option value="rock">rock</option>
+                            <option value="pop">pop</option>
+                            <option value="hip-hop">hip-hop</option>
+                            <option value="jazz">jazz</option>
+                            <option value="classical">classical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year_of_release">year of release</label>
+                        <input type="text" class="form-control" name="year_of_release" id="year_of_release">
+                    </div>
+                    <input type="submit" value="Add Song" class="btn btn-outline-success">
+                </form>
+            </div> 
+
+                {{ if .BadData }}
+                    <div class="alert alert-danger" role="alert">
+                    Incorrect data was entered to create a song!
+                    </div>
+                {{ end }}
+                {{ if .ReplayData }}
+                    <div class="alert alert-danger" role="alert">
+                    The song is already exists!
+                    </div>
+                {{ end }}
+
+        </main>
+
+        {{ template "footer" }}

@@ -64,16 +64,23 @@ func (h *Handler) InitRoute() *gin.Engine {
 		user.PUT("/update_data", h.updateUser)
 
 		user.GET("/get_song", h.getSongs)
+		user.GET("/song_info/:id", h.getSongInfo)
+		
 		user.GET("/get_artist", h.getArtist)
 		user.GET("/playlist/:id", h.getPlaylistByArtist)
+		
 		user.GET("/user_playlist", h.getUserPlaylist)
-		user.GET("/user_toplist", h.getUserToplist)
-
 		user.POST("/add_to_playlist/:id", h.addToPlaylist)
-		user.POST("/add_to_toplist/:id", h.addToToplist)
-
 		user.DELETE("/delete_from_playlist/:id", h.deleteSongFromPlaylist)
+		
+		user.GET("/user_toplist", h.getUserToplist)
+		user.POST("/add_to_toplist/:id", h.addToToplist)
 		user.DELETE("/delete_from_toplist/:id", h.deleteSongFromToplist)
+
+		user.GET("/create_new_data", h.createNewData)
+		user.POST("/save_new_data", h.saveNewData)
+		user.GET("/create_new_song", h.createNewSong)
+		user.POST("/save_new_song", h.saveNewSong)
 	}
 
 	return router
