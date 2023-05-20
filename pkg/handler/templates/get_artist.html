@@ -14,7 +14,6 @@
         <table class="table table-dark table-hover">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Name Artist or Band</th>
                     <th>Date of Birth/Establishment</th>
                     <th>About</th>
@@ -24,7 +23,6 @@
                 {{ if .IsAdmin }}
                 {{range .Artists}}
                 <tr>
-                    <td>{{.ID}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Birth}}</td>
                     <td>{{.About}}</td>
@@ -40,7 +38,6 @@
                 {{ else }}
                 {{range .Artists}}
                 <tr>
-                    <td>{{.ID}}</td>
                     <td>{{.Name}}</td>
                     <td>{{.Birth}}</td>
                     <td>{{.About}}</td>

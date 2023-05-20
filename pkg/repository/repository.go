@@ -44,6 +44,8 @@ type UsersLibrary interface {
 type DataFromUser interface {
 	CreateNewData(data model.DataFromUserList) error
 	CreateNewSong(song model.SongFromUserList) error
+	GetAllData() ([]model.DataFromUserList, error)
+	GetSongsFromUsers() ([]model.SongFromUserList, error)
 }
 
 type Repository struct {

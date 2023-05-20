@@ -309,3 +309,50 @@ func (h *Handler) deleteSong(c *gin.Context) {
 	c.Redirect(http.StatusSeeOther, "/api_admin/main_page")
 }
 
+// API FOR DATA AND SONG FROM USERS
+
+func (h *Handler) getDataFromUser(c *gin.Context) {
+	data, err := h.services.DataFromUser.GetAllData()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	c.HTML(http.StatusOK, "a_data_from_user.html", gin.H{
+		"Data": data,
+	})
+}
+
+func (h *Handler) getSongFromUser(c *gin.Context) {
+	var songList []model.SongData
+	songs, err := h.services.DataFromUser.GetSongsFromUsers()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	artists, err := h.services.Artists.GetAllArtists()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+
+		return
+	}
+	artistMap := make(map[int]string)
+	for _, artist := range artists {
+		artistMap[artist.ID] = artist.Name
+	}
+	for _, song := range songs {
+		songList = append(songList, model.SongData{
+			ID:         song.ID,
+			ArtistID:   song.ArtistID,
+			ArtistData: artistMap[song.ArtistID],
+			Name:       song.Name,
+			Genre:      song.Genre,
+			Genre2:     song.Genre2,
+			Year:       song.Year,
+		})
+	}
+	c.HTML(http.StatusOK, "a_song_from_user.html", gin.H{
+		"Songs":   songList,
+	})
+}
