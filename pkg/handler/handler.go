@@ -54,6 +54,9 @@ func (h *Handler) InitRoute() *gin.Engine {
 		admin.GET("/song", h.getAllSong)
 		admin.GET("/playlist/:id", h.getPlaylist)
 		admin.DELETE("/delete_song/:id", h.deleteSong)
+
+		admin.GET("/data_from_user", h.getDataFromUser)
+		admin.GET("/song_from_user", h.getSongFromUser)
 	}
 
 	user := router.Group("/api_user", h.userIdentity)
